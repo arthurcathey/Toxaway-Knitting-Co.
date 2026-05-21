@@ -26,11 +26,11 @@ Route::get('/', function () {
 
 // Authentication Routes
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login')->middleware('guest');
-Route::post('/login', [LoginController::class, 'login'])->middleware('guest');
+Route::post('/login', [LoginController::class, 'login'])->middleware('guest', 'throttle:5,1'); // 5 attempts per minute
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register')->middleware('guest');
-Route::post('/register', [RegisterController::class, 'register'])->middleware('guest');
+Route::post('/register', [RegisterController::class, 'register'])->middleware('guest', 'throttle:3,1'); // 3 attempts per minute
 
 // Dashboard (Protected Route)
 Route::get('/dashboard', function () {
@@ -77,21 +77,14 @@ Route::post('/contact', function (\Illuminate\Http\Request $request) {
   return redirect('/contact')->with('success', 'Thank you for your message! We\'ll get back to you soon.');
 })->name('contact.store');
 
-// Custom Jacket Routes (Phase 4 - Protected)
-Route::middleware('auth')->group(function () {
-  Route::get('/custom-jacket', function () {
-    return view('custom-jacket.builder');
-  })->name('custom-jacket.builder');
-});
-
-Route::post('/custom-jacket', function () {
-  // TODO: Save custom jacket request to database
-  // TODO: Send admin notification
-  // TODO: Send customer confirmation
-})->name('custom-jacket.store');
+// Custom Jacket Routes
+Route::get('/custom-jacket', [\App\Http\Controllers\CustomJacketController::class, 'show'])->name('custom-jacket.builder');
+Route::post('/custom-jacket', [\App\Http\Controllers\CustomJacketController::class, 'store'])->name('custom-jacket.store');
 
 // Filament Admin Routes (handled by Filament package)
 // Visit /admin once Filament is installed
+
+use App\Http\Controllers\CustomJacketController;
 
 // Admin Routes (Protected)
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(function () {

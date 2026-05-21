@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProductAdminController extends Controller
 {
@@ -32,11 +33,15 @@ class ProductAdminController extends Controller
       'in_stock' => 'boolean',
     ]);
 
-    // Handle file upload
+    // Handle file upload with secure filename
     if ($request->hasFile('image')) {
-      $path = $request->file('image')->store('products', 'public');
+      $filename = time() . '_' . Str::random(10) . '.' . $request->file('image')->getClientOriginalExtension();
+      $path = $request->file('image')->storeAs('products', $filename, 'public');
       $validated['image'] = $path;
     }
+
+    // Sanitize description input
+    $validated['description'] = strip_tags($validated['description']);
 
     Product::create($validated);
 
@@ -60,15 +65,19 @@ class ProductAdminController extends Controller
       'in_stock' => 'boolean',
     ]);
 
-    // Handle file upload
+    // Handle file upload with secure filename
     if ($request->hasFile('image')) {
       // Delete old image if it exists
       if ($product->image) {
         Storage::disk('public')->delete($product->image);
       }
-      $path = $request->file('image')->store('products', 'public');
+      $filename = time() . '_' . Str::random(10) . '.' . $request->file('image')->getClientOriginalExtension();
+      $path = $request->file('image')->storeAs('products', $filename, 'public');
       $validated['image'] = $path;
     }
+
+    // Sanitize description input
+    $validated['description'] = strip_tags($validated['description']);
 
     $product->update($validated);
 

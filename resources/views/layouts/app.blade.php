@@ -107,6 +107,12 @@
       </div>
     </div>
   </footer>
+
+  <button id="scroll-to-top-btn" class="hidden fixed bottom-8 right-8 bg-stone-600 text-stone-50 p-3 rounded-full hover:bg-stone-700 transition shadow-lg z-50" title="Scroll to top">
+    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+      <path fill-rule="evenodd" d="M3.293 14.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L10 9.414l-5.293 5.293a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+    </svg>
+  </button>
 </body>
 
 </html>

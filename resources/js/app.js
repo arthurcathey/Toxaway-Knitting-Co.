@@ -1,6 +1,4 @@
-// Vite entry point for JavaScript
 
-// Mobile menu toggle
 document.addEventListener('DOMContentLoaded', () => {
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
@@ -12,7 +10,29 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// Shop page utility functions
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const scrollBtn = document.getElementById('scroll-to-top-btn');
+  
+  if (scrollBtn) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        scrollBtn.classList.remove('hidden');
+      } else {
+        scrollBtn.classList.add('hidden');
+      }
+    });
+    
+    scrollBtn.addEventListener('click', scrollToTop);
+  }
+});
+
 function updateCartCount(count) {
   const cartLink = document.querySelector('[data-cart-count]');
   if (cartLink) {
@@ -26,3 +46,15 @@ function updateCartCount(count) {
 function requestConsultation() {
   window.location.href = '/contact?type=custom-consultation';
 }
+
+// Delete confirmation handler
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[data-confirm-delete]').forEach(form => {
+    form.addEventListener('submit', (e) => {
+      const message = form.getAttribute('data-confirm-delete');
+      if (!confirm(message)) {
+        e.preventDefault();
+      }
+    });
+  });
+});
