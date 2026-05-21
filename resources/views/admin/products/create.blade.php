@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-<main class="container-fluid section-py">
+<main class="container-fluid section-py px-6 py-16">
   <div class="max-w-2xl mx-auto">
-    <h1 class="text-4xl font-bold mb-8">Create Product</h1>
+    <h1 class="text-4xl font-bold mb-12">Create Product</h1>
 
     @if ($errors->any())
-    <div class="mb-6 rounded-lg bg-red-50 p-4 text-red-600">
+    <div class="mb-12 rounded-lg bg-red-50 p-4 text-red-600">
       <ul>
         @foreach ($errors->all() as $error)
         <li>{{ $error }}</li>

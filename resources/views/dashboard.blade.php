@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<main class="container-fluid section-py">
+<main class="container-fluid section-py px-6 py-16">
   <div class="max-w-4xl mx-auto">
     <div class="card mb-6">
       <h1 class="text-3xl font-bold mb-2">Welcome, {{ Auth::user()->name }}!</h1>

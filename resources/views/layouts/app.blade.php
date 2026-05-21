@@ -12,23 +12,23 @@
 <body>
   <nav class="sticky top-0 bg-stone-50 border-b border-stone-300 z-50">
     <div class="container-fluid py-3 sm:py-4 flex justify-between items-center">
-      <a href="/" class="font-bold text-sm sm:text-base tracking-widest text-stone-900 hover:text-stone-700 transition">TOXAWAY</a>
+      <a href="/" class="font-bold text-sm sm:text-base tracking-widest text-stone-900 hover:text-stone-700 transition">Toxaway Knitting Co.</a>
       <ul class="hidden md:flex gap-4 lg:gap-6 list-none items-center">
-        <li><a href="/shop" class="text-xs tracking-widest hover:text-stone-700 transition">SHOP</a></li>
-        <li><a href="/heritage" class="text-xs tracking-widest hover:text-stone-700 transition">HERITAGE</a></li>
-        <li><a href="/craftsmanship" class="text-xs tracking-widest hover:text-stone-700 transition">CRAFT</a></li>
-        <li><a href="/contact" class="text-xs tracking-widest hover:text-stone-700 transition">CONTACT</a></li>
-        <li><a href="/cart" class="text-xs tracking-widest hover:text-stone-700 transition border-l border-stone-300 pl-4">CART</a></li>
+        <li><a href="/shop" class="text-xs tracking-widest hover:text-stone-700 transition {{ request()->routeIs('shop.*') ? 'font-bold text-stone-900' : '' }}">SHOP</a></li>
+        <li><a href="/heritage" class="text-xs tracking-widest hover:text-stone-700 transition {{ request()->routeIs('heritage') ? 'font-bold text-stone-900' : '' }}">HERITAGE</a></li>
+        <li><a href="/craftsmanship" class="text-xs tracking-widest hover:text-stone-700 transition {{ request()->routeIs('craftsmanship') ? 'font-bold text-stone-900' : '' }}">CRAFT</a></li>
+        <li><a href="/contact" class="text-xs tracking-widest hover:text-stone-700 transition {{ request()->routeIs('contact') ? 'font-bold text-stone-900' : '' }}">CONTACT</a></li>
+        <li><a href="/cart" class="text-xs tracking-widest hover:text-stone-700 transition border-l border-stone-300 pl-4 {{ request()->routeIs('cart.index') ? 'font-bold text-stone-900' : '' }}">CART</a></li>
         @auth
         <li class="border-l border-stone-300 pl-4">
           <span class="text-xs tracking-widest text-stone-600">{{ Auth::user()->name }}</span>
         </li>
         <li>
-          <a href="{{ route('dashboard') }}" class="text-xs tracking-widest hover:text-stone-700 transition">DASHBOARD</a>
+          <a href="{{ route('dashboard') }}" class="text-xs tracking-widest hover:text-stone-700 transition {{ request()->routeIs('dashboard') ? 'font-bold text-stone-900' : '' }}">DASHBOARD</a>
         </li>
         @if (Auth::user()->is_admin)
         <li>
-          <a href="{{ route('admin.dashboard') }}" class="text-xs tracking-widest hover:text-stone-700 transition text-stone-900 font-semibold">ADMIN</a>
+          <a href="{{ route('admin.dashboard') }}" class="text-xs tracking-widest hover:text-stone-700 transition text-stone-900 {{ request()->routeIs('admin.*') ? 'font-bold' : '' }}">ADMIN</a>
         </li>
         @endif
         <li>
@@ -54,15 +54,15 @@
     </div>
     <div id="mobile-menu" class="hidden md:hidden border-t border-stone-300">
       <ul class="flex flex-col list-none divide-y divide-stone-300">
-        <li><a href="/shop" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition">SHOP</a></li>
-        <li><a href="/heritage" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition">HERITAGE</a></li>
-        <li><a href="/craftsmanship" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition">CRAFT</a></li>
-        <li><a href="/contact" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition">CONTACT</a></li>
-        <li><a href="/cart" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition">CART</a></li>
+        <li><a href="/shop" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition {{ request()->routeIs('shop.*') ? 'font-bold text-stone-900' : '' }}">SHOP</a></li>
+        <li><a href="/heritage" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition {{ request()->routeIs('heritage') ? 'font-bold text-stone-900' : '' }}">HERITAGE</a></li>
+        <li><a href="/craftsmanship" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition {{ request()->routeIs('craftsmanship') ? 'font-bold text-stone-900' : '' }}">CRAFT</a></li>
+        <li><a href="/contact" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition {{ request()->routeIs('contact') ? 'font-bold text-stone-900' : '' }}">CONTACT</a></li>
+        <li><a href="/cart" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition {{ request()->routeIs('cart.index') ? 'font-bold text-stone-900' : '' }}">CART</a></li>
         @auth
-        <li><a href="{{ route('dashboard') }}" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition">DASHBOARD</a></li>
+        <li><a href="{{ route('dashboard') }}" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition {{ request()->routeIs('dashboard') ? 'font-bold text-stone-900' : '' }}">DASHBOARD</a></li>
         @if (Auth::user()->is_admin)
-        <li><a href="{{ route('admin.dashboard') }}" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition text-stone-900 font-semibold">ADMIN</a></li>
+        <li><a href="{{ route('admin.dashboard') }}" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition text-stone-900 {{ request()->routeIs('admin.*') ? 'font-bold' : '' }}">ADMIN</a></li>
         @endif
         <li>
           <form method="POST" action="{{ route('logout') }}" class="block">
@@ -77,11 +77,6 @@
       </ul>
     </div>
   </nav>
-  <script>
-    document.getElementById('mobile-menu-btn')?.addEventListener('click', function() {
-      document.getElementById('mobile-menu').classList.toggle('hidden');
-    });
-  </script>
 
   @yield('content')
 

@@ -4,13 +4,11 @@
 
 @section('content')
 <main>
-  <!-- Page Header -->
   <section class="section-py border-b border-stone-300 container-fluid">
     <h1 class="mb-3 sm:mb-4">OUR COLLECTION</h1>
     <p class="text-stone-600 tracking-wide text-xs sm:text-sm">Premium heavyweight knitwear. All American-made.</p>
   </section>
 
-  <!-- Category Filter -->
   <section class="py-4 sm:py-6 border-b border-stone-300 container-fluid">
     <div class="flex gap-3 sm:gap-4 flex-wrap text-xs">
       <a href="/shop" class="font-bold tracking-widest text-stone-900 pb-2 border-b-2 border-stone-900">ALL</a>
@@ -20,7 +18,6 @@
     </div>
   </section>
 
-  <!-- Products Grid -->
   <section class="section-py container-fluid">
     <div class="grid-3col">
       @forelse($products as $product)
@@ -67,7 +64,6 @@
     </div>
   </section>
 
-  <!-- CTA Section -->
   <section class="section-py bg-stone-900 text-stone-50 mx-4 sm:mx-0 sm:my-12 md:mx-6 lg:mx-8 rounded text-center">
     <div class="container-fluid">
       <h2 class="mb-3 sm:mb-4 text-stone-50">NOT SURE WHAT YOU NEED?</h2>
@@ -76,39 +72,5 @@
     </div>
   </section>
 </main>
-
-<script>
-  function addToCart(productId) {
-    fetch('{{ route("cart.add") }}', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': '{{ csrf_token() }}',
-        },
-        body: JSON.stringify({
-          product_id: productId,
-          quantity: 1,
-        }),
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          alert('Added to cart! You now have ' + data.cartCount + ' item(s).');
-          updateCartCount(data.cartCount);
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to add to cart. Please try again.');
-      });
-  }
-
-  function updateCartCount(count) {
-    const cartLink = document.querySelector('[data-cart-count]');
-    if (cartLink) {
-      cartLink.setAttribute('data-cart-count', count);
-    }
-  }
-</script>
 
 @endsection

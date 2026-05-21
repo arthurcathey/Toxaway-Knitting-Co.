@@ -1,4 +1,3 @@
-// Cart management functions
 function removeFromCart(productId) {
   if (confirm('Remove this item from your cart?')) {
     fetch(window.cartConfig.removeUrl, {
@@ -33,6 +32,9 @@ function updateQuantity(productId, quantity) {
 }
 
 function addToCart(productId) {
+  const quantityInput = document.getElementById(`quantity-${productId}`);
+  const quantity = quantityInput ? parseInt(quantityInput.value) || 1 : 1;
+
   fetch(window.cartConfig.addUrl, {
     method: 'POST',
     headers: {
@@ -41,22 +43,25 @@ function addToCart(productId) {
     },
     body: JSON.stringify({
       product_id: productId,
-      quantity: 1,
+      quantity: quantity,
     }),
   })
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        alert('Added to cart!');
-        location.reload();
+        alert('Added to cart! You now have ' + data.cartCount + ' item(s).');
+        if (typeof updateCartCount === 'function') {
+          updateCartCount(data.cartCount);
+        }
       }
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Failed to add to cart. Please try again.');
+    });
 }
 
-// Event Listeners for data attributes
 document.addEventListener('DOMContentLoaded', () => {
-  // Handle "Add to Cart" buttons
   document.querySelectorAll('[data-add-to-cart]').forEach(button => {
     button.addEventListener('click', (e) => {
       const productId = button.getAttribute('data-add-to-cart');
@@ -64,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Handle "Remove from Cart" buttons
   document.querySelectorAll('[data-remove-from-cart]').forEach(button => {
     button.addEventListener('click', (e) => {
       const productId = button.getAttribute('data-remove-from-cart');
@@ -72,7 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Handle quantity input changes
   document.querySelectorAll('.quantity-input').forEach(input => {
     input.addEventListener('change', (e) => {
       const productId = input.getAttribute('data-product-id');

@@ -78,6 +78,6 @@
 
     /* Card component */
     .card {
-        @apply border border-stone-300 bg-white hover:border-stone-900 hover:shadow-lg transition;
+        @apply border border-stone-300 bg-white hover:border-stone-900 hover:shadow-lg transition p-6;
     }
 }
