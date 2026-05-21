@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,16 +22,31 @@ Route::get('/', function () {
   return view('home');
 })->name('home');
 
+// Authentication Routes
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login')->middleware('guest');
+Route::post('/login', [LoginController::class, 'login'])->middleware('guest');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
+
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register')->middleware('guest');
+Route::post('/register', [RegisterController::class, 'register'])->middleware('guest');
+
+// Dashboard (Protected Route)
+Route::get('/dashboard', function () {
+  return view('dashboard');
+})->name('dashboard')->middleware('auth');
+
 Route::get('/shop', [ProductController::class, 'index'])->name('shop');
 
 // Product Routes
 Route::get('/shop/{product}', [ProductController::class, 'show'])->name('product.show');
 
-// Cart Routes
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
-Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
-Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+// Cart Routes (Protected)
+Route::middleware('auth')->group(function () {
+  Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+  Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+  Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+  Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+});
 
 Route::get('/heritage', function () {
   return view('heritage');
@@ -58,10 +75,12 @@ Route::post('/contact', function (\Illuminate\Http\Request $request) {
   return redirect('/contact')->with('success', 'Thank you for your message! We\'ll get back to you soon.');
 })->name('contact.store');
 
-// Custom Jacket Routes (Phase 4)
-Route::get('/custom-jacket', function () {
-  return view('custom-jacket.builder');
-})->name('custom-jacket.builder');
+// Custom Jacket Routes (Phase 4 - Protected)
+Route::middleware('auth')->group(function () {
+  Route::get('/custom-jacket', function () {
+    return view('custom-jacket.builder');
+  })->name('custom-jacket.builder');
+});
 
 Route::post('/custom-jacket', function () {
   // TODO: Save custom jacket request to database

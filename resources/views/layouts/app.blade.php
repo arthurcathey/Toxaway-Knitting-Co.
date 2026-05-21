@@ -19,6 +19,27 @@
         <li><a href="/craftsmanship" class="text-xs tracking-widest hover:text-stone-700 transition">CRAFT</a></li>
         <li><a href="/contact" class="text-xs tracking-widest hover:text-stone-700 transition">CONTACT</a></li>
         <li><a href="/cart" class="text-xs tracking-widest hover:text-stone-700 transition border-l border-stone-300 pl-4">CART</a></li>
+        @auth
+        <li class="border-l border-stone-300 pl-4">
+          <span class="text-xs tracking-widest text-stone-600">{{ Auth::user()->name }}</span>
+        </li>
+        <li>
+          <a href="{{ route('dashboard') }}" class="text-xs tracking-widest hover:text-stone-700 transition">DASHBOARD</a>
+        </li>
+        <li>
+          <form method="POST" action="{{ route('logout') }}" class="inline">
+            @csrf
+            <button type="submit" class="text-xs tracking-widest hover:text-stone-700 transition">LOGOUT</button>
+          </form>
+        </li>
+        @else
+        <li class="border-l border-stone-300 pl-4">
+          <a href="{{ route('login') }}" class="text-xs tracking-widest hover:text-stone-700 transition">LOGIN</a>
+        </li>
+        <li>
+          <a href="{{ route('register') }}" class="text-xs tracking-widest hover:text-stone-700 transition">REGISTER</a>
+        </li>
+        @endauth
       </ul>
       <button id="mobile-menu-btn" class="md:hidden text-stone-900 hover:text-stone-700 transition">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -33,6 +54,18 @@
         <li><a href="/craftsmanship" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition">CRAFT</a></li>
         <li><a href="/contact" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition">CONTACT</a></li>
         <li><a href="/cart" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition">CART</a></li>
+        @auth
+        <li><a href="{{ route('dashboard') }}" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition">DASHBOARD</a></li>
+        <li>
+          <form method="POST" action="{{ route('logout') }}" class="block">
+            @csrf
+            <button type="submit" class="w-full text-left px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition">LOGOUT</button>
+          </form>
+        </li>
+        @else
+        <li><a href="{{ route('login') }}" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition">LOGIN</a></li>
+        <li><a href="{{ route('register') }}" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition">REGISTER</a></li>
+        @endauth
       </ul>
     </div>
   </nav>
