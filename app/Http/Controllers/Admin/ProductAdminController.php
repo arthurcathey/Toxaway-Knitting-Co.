@@ -29,6 +29,8 @@ class ProductAdminController extends Controller
       'description' => 'required|string',
       'price' => 'required|numeric|min:0',
       'category' => 'required|string',
+      'sizes' => 'nullable|array',
+      'sizes.*' => 'in:sm,md,lg,xl,xxl',
       'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
       'in_stock' => 'boolean',
     ]);
@@ -42,6 +44,9 @@ class ProductAdminController extends Controller
 
     // Sanitize description input
     $validated['description'] = strip_tags($validated['description']);
+
+    // Convert sizes array to JSON or null if empty
+    $validated['sizes'] = !empty($validated['sizes']) ? $validated['sizes'] : null;
 
     Product::create($validated);
 
@@ -61,6 +66,8 @@ class ProductAdminController extends Controller
       'description' => 'required|string',
       'price' => 'required|numeric|min:0',
       'category' => 'required|string',
+      'sizes' => 'nullable|array',
+      'sizes.*' => 'in:sm,md,lg,xl,xxl',
       'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
       'in_stock' => 'boolean',
     ]);
@@ -78,6 +85,9 @@ class ProductAdminController extends Controller
 
     // Sanitize description input
     $validated['description'] = strip_tags($validated['description']);
+
+    // Convert sizes array to JSON or null if empty
+    $validated['sizes'] = !empty($validated['sizes']) ? $validated['sizes'] : null;
 
     $product->update($validated);
 

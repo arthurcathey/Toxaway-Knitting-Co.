@@ -64,6 +64,28 @@
           <a href="/custom-jacket" class="btn-primary w-full text-center block mb-3 sm:mb-4">DESIGN YOUR OWN</a>
           <button type="button" onclick="requestConsultation()" class="btn-secondary w-full">REQUEST CONSULTATION</button>
           @else
+          @if($product->sizes && count($product->sizes) > 0)
+          <div class="mb-4">
+            <label for="size-{{ $product->id }}" class="block text-xs sm:text-sm text-stone-600 mb-2">SIZE</label>
+            <select
+              id="size-{{ $product->id }}"
+              class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-stone-300 rounded text-stone-900 text-xs sm:text-sm focus:outline-none focus:border-stone-900">
+              <option value="">Select a size</option>
+              @foreach($product->sizes as $size)
+              <option value="{{ $size }}">
+                {{ match($size) {
+                  'sm' => 'Small',
+                  'md' => 'Medium',
+                  'lg' => 'Large',
+                  'xl' => 'Extra Large',
+                  'xxl' => 'Extra Extra Large',
+                  default => $size
+                } }}
+              </option>
+              @endforeach
+            </select>
+          </div>
+          @endif
           <div class="mb-4">
             <label for="quantity-{{ $product->id }}" class="block text-xs sm:text-sm text-stone-600 mb-2">QUANTITY</label>
             <input

@@ -66,6 +66,23 @@
         </div>
 
         <div class="mb-6">
+          <label class="block text-sm font-semibold text-gray-700 mb-3">Available Sizes</label>
+          <div class="space-y-2">
+            @foreach(['sm' => 'Small', 'md' => 'Medium', 'lg' => 'Large', 'xl' => 'Extra Large', 'xxl' => 'Extra Extra Large'] as $size => $label)
+            <div class="flex items-center">
+              <input type="checkbox" id="size_{{ $size }}" name="sizes[]" value="{{ $size }}"
+                {{ in_array($size, old('sizes', [])) ? 'checked' : '' }}
+                class="h-4 w-4 rounded border-gray-300">
+              <label for="size_{{ $size }}" class="ml-2 text-sm text-gray-700">{{ $label }}</label>
+            </div>
+            @endforeach
+          </div>
+          @error('sizes')
+          <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+          @enderror
+        </div>
+
+        <div class="mb-6">
           <label for="image" class="block text-sm font-semibold text-gray-700 mb-2">Product Image</label>
           <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
             class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none @error('image') border-red-500 @enderror">

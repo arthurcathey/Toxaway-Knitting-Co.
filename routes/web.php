@@ -90,4 +90,6 @@ use App\Http\Controllers\CustomJacketController;
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(function () {
   Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
   Route::resource('products', ProductAdminController::class);
+  Route::resource('custom-jackets', \App\Http\Controllers\Admin\CustomJacketAdminController::class, ['only' => ['index', 'show', 'update']]);
+  Route::post('custom-jackets/{customJacket}/cancel', [\App\Http\Controllers\Admin\CustomJacketAdminController::class, 'cancel'])->name('custom-jackets.cancel');
 });

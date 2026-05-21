@@ -19,6 +19,7 @@ class CustomJacketRequest extends Model
     'primary_color',
     'secondary_color',
     'material',
+    'sizes',
     'front_text',
     'custom_details',
     'inspiration_image',
@@ -36,6 +37,7 @@ class CustomJacketRequest extends Model
     'quoted_at' => 'datetime',
     'approved_at' => 'datetime',
     'quoted_price' => 'decimal:2',
+    'sizes' => 'array',
   ];
 
   /**

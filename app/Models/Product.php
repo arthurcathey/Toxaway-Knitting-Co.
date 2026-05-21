@@ -15,6 +15,7 @@ class Product extends Model
     'description',
     'price',
     'category',
+    'sizes',
     'image',
     'in_stock',
   ];
@@ -22,6 +23,7 @@ class Product extends Model
   protected $casts = [
     'price' => 'decimal:2',
     'in_stock' => 'boolean',
+    'sizes' => 'array',
   ];
 
   public function getRouteKeyName()

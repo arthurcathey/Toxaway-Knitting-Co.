@@ -63,7 +63,7 @@
       <p class="text-stone-600 mb-8">Fill out this form to begin your custom varsity jacket journey. We'll review your specifications and send a detailed quote within 2-3 business days.</p>
 
       <div class="card">
-        <form action="{{ route('custom-jacket.store') }}" method="POST" enctype="multipart/form-data">
+        <form id="jacketForm" action="{{ route('custom-jacket.store') }}" method="POST" enctype="multipart/form-data">
           @csrf
 
           <!-- Contact Information -->
@@ -171,13 +171,37 @@
             </div>
           </fieldset>
 
+          <!-- Sizing -->
+          <fieldset class="mb-8">
+            <legend class="text-sm font-bold tracking-widest uppercase text-stone-900 mb-6">Sizing</legend>
+
+            <div class="mb-6">
+              <label class="block text-xs font-bold tracking-widest uppercase text-stone-600 mb-3">Available Sizes *</label>
+              <div class="space-y-2">
+                @foreach(['sm' => 'Small', 'md' => 'Medium', 'lg' => 'Large', 'xl' => 'Extra Large', 'xxl' => 'Extra Extra Large'] as $size => $label)
+                <div class="flex items-center">
+                  <input type="checkbox" id="size_{{ $size }}" name="sizes[]" value="{{ $size }}"
+                    {{ in_array($size, old('sizes', [])) ? 'checked' : '' }}
+                    class="h-4 w-4 rounded border-gray-300">
+                  <label for="size_{{ $size }}" class="ml-2 text-xs text-stone-700">{{ $label }}</label>
+                </div>
+                @endforeach
+              </div>
+              @error('sizes')
+              <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
+              @enderror
+            </div>
+
+            <p class="text-xs text-stone-600">Select the size(s) you need for your custom jacket. You can choose multiple sizes if ordering for a group.</p>
+          </fieldset>
+
           <!-- Personalization -->
           <fieldset class="mb-8">
             <legend class="text-sm font-bold tracking-widest uppercase text-stone-900 mb-6">Personalization</legend>
 
             <div class="mb-6">
               <label for="front_text" class="block text-xs font-bold tracking-widest uppercase text-stone-600 mb-2">Front Letters/Text *</label>
-              <input type="text" id="front_text" name="front_text" value="{{ old('front_text') }}" placeholder="e.g., Your School or Club Name" required
+              <input type="text" id="front_text" name="front_text" value="{{ old('front_text') }}" maxlength="50" placeholder="e.g., Your School or Club Name" required
                 class="w-full px-4 py-2 border border-stone-300 text-xs focus:outline-none focus:border-stone-900 @error('front_text') border-red-500 @enderror">
               @error('front_text')
               <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -186,7 +210,7 @@
 
             <div class="mb-6">
               <label for="custom_details" class="block text-xs font-bold tracking-widest uppercase text-stone-600 mb-2">Custom Details (Optional)</label>
-              <textarea id="custom_details" name="custom_details" rows="6"
+              <textarea id="custom_details" name="custom_details" rows="6" maxlength="1000"
                 class="w-full px-4 py-2 border border-stone-300 text-xs focus:outline-none focus:border-stone-900 @error('custom_details') border-red-500 @enderror"
                 placeholder="Describe patches, sleeve designs, year, or other preferences...">{{ old('custom_details') }}</textarea>
               @error('custom_details')
@@ -263,4 +287,7 @@
     </div>
   </div>
 </main>
+
+<!-- Load Custom Jacket Form Validations -->
+@vite(['resources/js/custom-jacket-form.js'])
 @endsection
