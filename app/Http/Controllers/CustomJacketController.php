@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\CustomJacketRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Mail\CustomJacketQuoteRequested;
 use App\Mail\CustomJacketConfirmation;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class CustomJacketController extends Controller
 {
@@ -51,8 +52,8 @@ class CustomJacketController extends Controller
     }
 
     // Attach user ID if authenticated
-    if (auth()->check()) {
-      $validated['user_id'] = auth()->id();
+    if (Auth::check()) {
+      $validated['user_id'] = Auth::id();
     }
 
     // Create the request
@@ -68,10 +69,10 @@ class CustomJacketController extends Controller
       Mail::to($adminEmail)->send(new CustomJacketQuoteRequested($customJacket));
     } catch (\Exception $e) {
       // Log error but don't fail the request
-      \Log::error('Failed to send custom jacket emails: ' . $e->getMessage());
+      Log::error('Failed to send custom jacket emails: ' . $e->getMessage());
     }
 
-    return redirect('/custom-jacket')
+    return redirect()->route('custom-jacket.show')
       ->with('success', 'Thank you for your custom jacket request! We\'ll review your specifications and send a quote within 2-3 business days.');
   }
 }
