@@ -6,8 +6,10 @@
 <main>
   <!-- Hero Section -->
   <section class="text-center section-py border-b border-stone-300 container-fluid">
-    <h1 class="mb-4 sm:mb-6">Heavyweight American-Made Knitwear</h1>
+    <h1 class="mb-4 sm:mb-6">Toxaway Knitting Company</h1>
     <p class="text-stone-600 mb-6 sm:mb-10 tracking-widest text-xs sm:text-sm">Crafted for durability. Built to last.</p>
+    <p class="text-stone-600 mb-6 sm:mb-10 tracking-widest text-xs sm:text-sm">Heavyweight American-Made Knitwear.</p>
+
     <div class="flex gap-3 sm:gap-4 justify-center flex-wrap">
       <a href="/shop" class="btn-primary">SHOP SWEATERS</a>
       <a href="/custom-jacket" class="btn-secondary">BUILD CUSTOM JACKET</a>

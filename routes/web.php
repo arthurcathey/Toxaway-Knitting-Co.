@@ -5,6 +5,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\ProductAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,3 +92,9 @@ Route::post('/custom-jacket', function () {
 
 // Filament Admin Routes (handled by Filament package)
 // Visit /admin once Filament is installed
+
+// Admin Routes (Protected)
+Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(function () {
+  Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+  Route::resource('products', ProductAdminController::class);
+});
