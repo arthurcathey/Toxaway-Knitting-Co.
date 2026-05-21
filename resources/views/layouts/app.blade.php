@@ -6,7 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>@yield('title') | Toxaway Knitting Co.</title>
   <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
+  @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/cart.js'])
+  <script>
+    window.cartConfig = {
+      addUrl: '{{ route("cart.add") }}',
+      removeUrl: '{{ route("cart.remove") }}',
+      updateUrl: '{{ route("cart.update") }}',
+      csrfToken: '{{ csrf_token() }}'
+    };
+  </script>
 </head>
 
 <body>
@@ -18,7 +26,7 @@
         <li><a href="/heritage" class="text-xs tracking-widest hover:text-stone-700 transition {{ request()->routeIs('heritage') ? 'font-bold text-stone-900' : '' }}">HERITAGE</a></li>
         <li><a href="/craftsmanship" class="text-xs tracking-widest hover:text-stone-700 transition {{ request()->routeIs('craftsmanship') ? 'font-bold text-stone-900' : '' }}">CRAFT</a></li>
         <li><a href="/contact" class="text-xs tracking-widest hover:text-stone-700 transition {{ request()->routeIs('contact') ? 'font-bold text-stone-900' : '' }}">CONTACT</a></li>
-        <li><a href="/cart" class="text-xs tracking-widest hover:text-stone-700 transition border-l border-stone-300 pl-4 {{ request()->routeIs('cart.index') ? 'font-bold text-stone-900' : '' }}">CART</a></li>
+        <li><a href="/cart" class="text-xs tracking-widest hover:text-stone-700 transition border-l border-stone-300 pl-4 {{ request()->routeIs('cart.index') ? 'font-bold text-stone-900' : '' }}" data-cart-count="0">CART</a></li>
         @auth
         <li class="border-l border-stone-300 pl-4">
           <span class="text-xs tracking-widest text-stone-600">{{ Auth::user()->name }}</span>
@@ -58,7 +66,7 @@
         <li><a href="/heritage" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition {{ request()->routeIs('heritage') ? 'font-bold text-stone-900' : '' }}">HERITAGE</a></li>
         <li><a href="/craftsmanship" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition {{ request()->routeIs('craftsmanship') ? 'font-bold text-stone-900' : '' }}">CRAFT</a></li>
         <li><a href="/contact" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition {{ request()->routeIs('contact') ? 'font-bold text-stone-900' : '' }}">CONTACT</a></li>
-        <li><a href="/cart" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition {{ request()->routeIs('cart.index') ? 'font-bold text-stone-900' : '' }}">CART</a></li>
+        <li><a href="/cart" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition {{ request()->routeIs('cart.index') ? 'font-bold text-stone-900' : '' }}" data-cart-count="0">CART</a></li>
         @auth
         <li><a href="{{ route('dashboard') }}" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition {{ request()->routeIs('dashboard') ? 'font-bold text-stone-900' : '' }}">DASHBOARD</a></li>
         @if (Auth::user()->is_admin)

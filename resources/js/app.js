@@ -39,9 +39,20 @@ function updateCartCount(count) {
     cartLink.setAttribute('data-cart-count', count);
     if (count > 0) {
       cartLink.innerHTML = `CART <span class="bg-stone-900 text-stone-50 rounded-full w-5 h-5 flex items-center justify-center text-xs">${count}</span>`;
+    } else {
+      cartLink.innerHTML = 'CART';
     }
   }
 }
+
+// Initialize cart count from session on page load
+document.addEventListener('DOMContentLoaded', () => {
+  // Get cart count from localStorage or session
+  const cartCount = localStorage.getItem('cartCount') || 0;
+  if (cartCount > 0) {
+    updateCartCount(cartCount);
+  }
+});
 
 function requestConsultation() {
   window.location.href = '/contact?type=custom-consultation';

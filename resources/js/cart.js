@@ -10,7 +10,14 @@ function removeFromCart(productId) {
         product_id: productId,
       }),
     })
-      .then(() => location.reload())
+      .then(response => response.json())
+      .then(data => {
+        localStorage.setItem('cartCount', data.cartCount);
+        if (typeof updateCartCount === 'function') {
+          updateCartCount(data.cartCount);
+        }
+        location.reload();
+      })
       .catch(error => console.error('Error:', error));
   }
 }
@@ -27,7 +34,14 @@ function updateQuantity(productId, quantity) {
       quantity: parseInt(quantity),
     }),
   })
-    .then(() => location.reload())
+    .then(response => response.json())
+    .then(data => {
+      localStorage.setItem('cartCount', data.cartCount);
+      if (typeof updateCartCount === 'function') {
+        updateCartCount(data.cartCount);
+      }
+      location.reload();
+    })
     .catch(error => console.error('Error:', error));
 }
 
@@ -49,6 +63,7 @@ function addToCart(productId) {
     .then(response => response.json())
     .then(data => {
       if (data.success) {
+        localStorage.setItem('cartCount', data.cartCount);
         alert('Added to cart! You now have ' + data.cartCount + ' item(s).');
         if (typeof updateCartCount === 'function') {
           updateCartCount(data.cartCount);
