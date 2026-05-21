@@ -347,3 +347,4 @@ For questions or issues, contact the development team or open an issue on GitHub
 **Last Updated:** May 19, 2026  
 **Current Version:** 1.0.0-alpha  
 **Status:** Foundation Complete - Ready for Admin Development
+# Toxaway-Knitting-Co.
