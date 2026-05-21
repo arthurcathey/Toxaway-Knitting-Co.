@@ -25,7 +25,11 @@
     <div class="grid-3col">
       @forelse($products as $product)
       <div class="card">
+        @if($product->image)
+        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full aspect-square object-cover">
+        @else
         <div class="bg-stone-200 w-full aspect-square flex items-center justify-center text-xs text-stone-600">[{{ $product->name }}]</div>
+        @endif
         <div class="p-4 sm:p-6">
           <h3 class="text-stone-900 mb-2 sm:mb-3 text-xs sm:text-sm">{{ $product->name }}</h3>
           <p class="text-stone-600 leading-relaxed mb-3 sm:mb-4 text-xs">

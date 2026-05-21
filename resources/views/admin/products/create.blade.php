@@ -16,7 +16,7 @@
     @endif
 
     <div class="card">
-      <form action="{{ route('admin.products.store') }}" method="POST">
+      <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="mb-6">
@@ -66,9 +66,10 @@
         </div>
 
         <div class="mb-6">
-          <label for="image" class="block text-sm font-semibold text-gray-700 mb-2">Image URL</label>
-          <input type="text" id="image" name="image" value="{{ old('image') }}" placeholder="https://..."
+          <label for="image" class="block text-sm font-semibold text-gray-700 mb-2">Product Image</label>
+          <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
             class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none @error('image') border-red-500 @enderror">
+          <p class="mt-1 text-sm text-gray-500">Supported formats: JPEG, PNG, GIF, WebP (Max 2MB)</p>
           @error('image')
           <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
           @enderror
