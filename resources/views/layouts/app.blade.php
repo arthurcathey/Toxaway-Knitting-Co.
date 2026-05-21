@@ -28,7 +28,7 @@
         </li>
         @if (Auth::user()->is_admin)
         <li>
-          <a href="{{ route('admin.dashboard') }}" class="text-xs tracking-widest hover:text-stone-700 transition text-blue-600 font-semibold">ADMIN</a>
+          <a href="{{ route('admin.dashboard') }}" class="text-xs tracking-widest hover:text-stone-700 transition text-stone-900 font-semibold">ADMIN</a>
         </li>
         @endif
         <li>
@@ -62,7 +62,7 @@
         @auth
         <li><a href="{{ route('dashboard') }}" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition">DASHBOARD</a></li>
         @if (Auth::user()->is_admin)
-        <li><a href="{{ route('admin.dashboard') }}" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition text-blue-600 font-semibold">ADMIN</a></li>
+        <li><a href="{{ route('admin.dashboard') }}" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition text-stone-900 font-semibold">ADMIN</a></li>
         @endif
         <li>
           <form method="POST" action="{{ route('logout') }}" class="block">
