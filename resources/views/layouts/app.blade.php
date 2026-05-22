@@ -14,11 +14,29 @@
       updateUrl: '{{ route("cart.update") }}',
       csrfToken: '{{ csrf_token() }}'
     };
+    // Scroll to top immediately and on page load
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    window.addEventListener('load', () => {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      window.scrollTo(0, 0);
+    });
+    window.addEventListener('DOMContentLoaded', () => {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    });
   </script>
 </head>
 
 <body>
-  <nav class="sticky top-0 bg-stone-50 border-b border-stone-300 z-50">
+  <script>
+    // Scroll to top immediately before any rendering
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    if (window.scrollTo) window.scrollTo(0, 0);
+  </script>
+  <nav class="fixed top-0 left-0 right-0 bg-stone-50 border-b border-stone-300 z-50">
     <div class="container-fluid py-3 sm:py-4 flex justify-between items-center">
       <a href="/" class="font-bold text-sm sm:text-base tracking-widest text-stone-900 hover:text-stone-700 transition">Toxaway Knitting Co.</a>
       <ul class="hidden md:flex gap-4 lg:gap-6 list-none items-center">

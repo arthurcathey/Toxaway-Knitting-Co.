@@ -46,6 +46,14 @@ function updateQuantity(productId, quantity) {
 }
 
 function addToCart(productId) {
+  const sizeSelect = document.getElementById(`size-${productId}`);
+  
+  // Check if a size selector exists and if a size has been selected
+  if (sizeSelect && !sizeSelect.value) {
+    alert('Please select a size before adding to cart.');
+    return;
+  }
+
   const quantityInput = document.getElementById(`quantity-${productId}`);
   const quantity = quantityInput ? parseInt(quantityInput.value) || 1 : 1;
 

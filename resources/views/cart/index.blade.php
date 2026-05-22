@@ -86,7 +86,7 @@
               </div>
             </div>
 
-            <button type="button" class="btn-primary w-full">PROCEED TO CHECKOUT</button>
+            <a href="{{ route('order.checkout') }}" class="btn-primary w-full text-center block">PROCEED TO CHECKOUT</a>
             <a href="/shop" class="btn-secondary w-full text-center block">CONTINUE SHOPPING</a>
 
             @if($total >= 100)

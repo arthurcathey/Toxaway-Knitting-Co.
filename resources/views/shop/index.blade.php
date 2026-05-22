@@ -45,13 +45,7 @@
             <a href="/custom-jacket" class="btn-primary w-full text-center block text-xs">START BUILDER</a>
             <a href="/shop/{{ $product->slug }}" class="btn-secondary w-full text-center block text-xs">LEARN MORE</a>
             @else
-            <button
-              type="button"
-              data-add-to-cart="{{ $product->id }}"
-              class="btn-primary w-full text-xs">
-              ADD TO CART
-            </button>
-            <a href="/shop/{{ $product->slug }}" class="btn-secondary w-full text-center block text-xs">VIEW DETAILS</a>
+            <a href="/shop/{{ $product->slug }}" class="btn-primary w-full text-center block text-xs">SELECT OPTIONS</a>
             @endif
           </div>
         </div>

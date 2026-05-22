@@ -38,8 +38,10 @@ function updateCartCount(count) {
   if (cartLink) {
     cartLink.setAttribute('data-cart-count', count);
     if (count > 0) {
+      cartLink.classList.add('inline-flex', 'items-center', 'gap-2');
       cartLink.innerHTML = `CART <span class="bg-stone-900 text-stone-50 rounded-full w-5 h-5 flex items-center justify-center text-xs">${count}</span>`;
     } else {
+      cartLink.classList.remove('inline-flex', 'items-center', 'gap-2');
       cartLink.innerHTML = 'CART';
     }
   }
@@ -52,6 +54,29 @@ document.addEventListener('DOMContentLoaded', () => {
   if (cartCount > 0) {
     updateCartCount(cartCount);
   }
+
+  // Handle size selection - disable add to cart button until size is chosen
+  document.querySelectorAll('[data-add-to-cart]').forEach(button => {
+    const productId = button.getAttribute('data-add-to-cart');
+    const sizeSelect = document.getElementById(`size-${productId}`);
+    
+    if (sizeSelect) {
+      // Initially disable the button if no size is selected
+      button.disabled = true;
+      button.classList.add('opacity-50', 'cursor-not-allowed');
+      
+      // Enable/disable button based on size selection
+      sizeSelect.addEventListener('change', () => {
+        if (sizeSelect.value) {
+          button.disabled = false;
+          button.classList.remove('opacity-50', 'cursor-not-allowed');
+        } else {
+          button.disabled = true;
+          button.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+      });
+    }
+  });
 });
 
 function requestConsultation() {

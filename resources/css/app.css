@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+    scroll-behavior: auto;
+}
+
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap");
 
 * {
@@ -10,7 +15,7 @@
 
 @layer base {
     body {
-        @apply bg-stone-50 text-stone-900;
+        @apply bg-stone-50 text-stone-900 pt-16 sm:pt-20;
     }
 
     /* Fluid Typography Scales */

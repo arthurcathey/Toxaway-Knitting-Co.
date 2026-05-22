@@ -3,10 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ProductAdminController;
+use App\Http\Controllers\CustomJacketController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +50,11 @@ Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 
+// Order Routes (Public - sessions work for all users)
+Route::get('/checkout', [OrderController::class, 'checkout'])->name('order.checkout');
+Route::post('/checkout', [OrderController::class, 'store'])->name('order.store');
+Route::get('/order/{order}', [OrderController::class, 'confirmation'])->name('order.confirmation');
+
 Route::get('/heritage', function () {
   return view('heritage');
 })->name('heritage');
@@ -76,13 +83,8 @@ Route::post('/contact', function (\Illuminate\Http\Request $request) {
 })->name('contact.store');
 
 // Custom Jacket Routes
-Route::get('/custom-jacket', [\App\Http\Controllers\CustomJacketController::class, 'show'])->name('custom-jacket.builder');
-Route::post('/custom-jacket', [\App\Http\Controllers\CustomJacketController::class, 'store'])->name('custom-jacket.store');
-
-// Filament Admin Routes (handled by Filament package)
-// Visit /admin once Filament is installed
-
-use App\Http\Controllers\CustomJacketController;
+Route::get('/custom-jacket', [CustomJacketController::class, 'show'])->name('custom-jacket.builder');
+Route::post('/custom-jacket', [CustomJacketController::class, 'store'])->name('custom-jacket.store');
 
 // Admin Routes (Protected)
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(function () {

@@ -152,8 +152,7 @@
             <span class="text-stone-600">In Stock</span>
           </div>
           <div class="space-y-2">
-            <button data-add-to-cart="{{ $related->id }}" class="btn-primary w-full text-xs">ADD TO CART</button>
-            <a href="/shop/{{ $related->slug }}" class="btn-secondary w-full text-center block text-xs">VIEW</a>
+            <a href="/shop/{{ $related->slug }}" class="btn-primary w-full text-center block text-xs">SELECT OPTIONS</a>
           </div>
         </div>
       </div>
