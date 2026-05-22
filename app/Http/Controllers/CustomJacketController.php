@@ -66,7 +66,7 @@ class CustomJacketController extends Controller
       Log::error('Failed to send custom jacket emails: ' . $e->getMessage());
     }
 
-    return redirect()->route('custom-jacket.show')
+    return redirect()->route('custom-jacket.builder')
       ->with('success', 'Thank you for your custom jacket request! We\'ll review your specifications and send a quote within 2-3 business days.');
   }
 }
