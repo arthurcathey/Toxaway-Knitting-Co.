@@ -103,11 +103,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Handle remove cart button clicks with both product_id and size
+  document.querySelectorAll('.remove-cart-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const productId = this.dataset.productId;
+      const size = this.dataset.size;
+      removeFromCart(productId, size);
+    });
+  });
+
   document.querySelectorAll('.quantity-input').forEach(input => {
     input.addEventListener('change', (e) => {
       const productId = input.getAttribute('data-product-id');
+      const size = input.getAttribute('data-size');
       const quantity = input.value;
-      updateQuantity(productId, quantity);
+      updateQuantity(productId, size, quantity);
     });
   });
 });

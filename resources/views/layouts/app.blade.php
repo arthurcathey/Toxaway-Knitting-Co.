@@ -6,36 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>@yield('title') | Toxaway Knitting Co.</title>
   <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
-  @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/cart.js'])
+  @vite(['resources/css/app.css', 'resources/js/config.js', 'resources/js/scroll.js', 'resources/js/app.js', 'resources/js/cart.js'])
   <script>
+    // Set up global cart configuration with Laravel routes
     window.cartConfig = {
       addUrl: '{{ route("cart.add") }}',
       removeUrl: '{{ route("cart.remove") }}',
       updateUrl: '{{ route("cart.update") }}',
       csrfToken: '{{ csrf_token() }}'
     };
-    // Scroll to top immediately and on page load
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-    window.addEventListener('load', () => {
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-      window.scrollTo(0, 0);
-    });
-    window.addEventListener('DOMContentLoaded', () => {
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-    });
   </script>
 </head>
 
 <body>
-  <script>
-    // Scroll to top immediately before any rendering
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-    if (window.scrollTo) window.scrollTo(0, 0);
-  </script>
   <nav class="fixed top-0 left-0 right-0 bg-stone-50 border-b border-stone-300 z-50">
     <div class="container-fluid py-3 sm:py-4 flex justify-between items-center">
       <a href="/" class="font-bold text-sm sm:text-base tracking-widest text-stone-900 hover:text-stone-700 transition">Toxaway Knitting Co.</a>

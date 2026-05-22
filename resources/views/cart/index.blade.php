@@ -27,8 +27,9 @@
               </div>
               <button
                 type="button"
-                onclick="removeFromCart({{ $item['product_id'] }}, '{{ $item['size'] }}')"
-                class="text-stone-600 hover:text-stone-900 transition text-xs">
+                data-product-id="{{ $item['product_id'] }}"
+                data-size="{{ $item['size'] }}"
+                class="remove-cart-btn text-stone-600 hover:text-stone-900 transition text-xs">
                 ✕
               </button>
             </div>
@@ -146,17 +147,5 @@
   </section>
   @endif
 </main>
-
-<script type="module">
-  import('./js/cart.js');
-
-  // Configure cart functions with routes and CSRF token
-  window.cartConfig = {
-    addUrl: '{{ route("cart.add") }}',
-    removeUrl: '{{ route("cart.remove") }}',
-    updateUrl: '{{ route("cart.update") }}',
-    csrfToken: '{{ csrf_token() }}',
-  };
-</script>
 
 @endsection
