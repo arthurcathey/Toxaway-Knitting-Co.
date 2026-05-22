@@ -142,8 +142,8 @@
               @foreach($items as $item)
               <div class="flex justify-between items-start text-xs sm:text-sm">
                 <div>
-                  <p class="font-semibold text-stone-900">{{ $item['product']->name }}</p>
-                  <p class="text-stone-600">Qty: {{ $item['quantity'] }}</p>
+                  <p class="font-semibold text-stone-900">{{ $item['product_name'] }}</p>
+                  <p class="text-stone-600">Size: {{ $item['size'] }}, Qty: {{ $item['quantity'] }}</p>
                 </div>
                 <p class="font-semibold text-stone-900">${{ number_format($item['subtotal'], 2) }}</p>
               </div>

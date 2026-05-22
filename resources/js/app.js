@@ -77,6 +77,19 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   });
+
+  // Handle quantity input changes on cart page
+  document.querySelectorAll('.quantity-input').forEach(input => {
+    input.addEventListener('change', () => {
+      const productId = input.getAttribute('data-product-id');
+      const size = input.getAttribute('data-size');
+      const quantity = input.value;
+      
+      if (productId && size) {
+        updateQuantity(productId, size, quantity);
+      }
+    });
+  });
 });
 
 function requestConsultation() {

@@ -4,14 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\Product;
+use App\Services\CartService;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+  protected $cartService;
+
+  public function __construct(CartService $cartService)
+  {
+    $this->cartService = $cartService;
+  }
+
   public function checkout()
   {
-    $cart = session()->get('cart', []);
+    $cart = $this->cartService->getCart();
 
     if (empty($cart)) {
       return redirect('/shop')->with('error', 'Your cart is empty.');
@@ -20,16 +27,15 @@ class OrderController extends Controller
     $items = [];
     $subtotal = 0;
 
-    foreach ($cart as $productId => $quantity) {
-      $product = Product::find($productId);
-      if ($product) {
-        $items[] = [
-          'product' => $product,
-          'quantity' => $quantity,
-          'subtotal' => $product->price * $quantity,
-        ];
-        $subtotal += $product->price * $quantity;
-      }
+    foreach ($cart as $item) {
+      $items[] = [
+        'product_name' => $item['product_name'],
+        'size' => $item['size'],
+        'price' => $item['price'],
+        'quantity' => $item['quantity'],
+        'subtotal' => $item['price'] * $item['quantity'],
+      ];
+      $subtotal += $item['price'] * $item['quantity'];
     }
 
     $shipping_cost = $subtotal >= 100 ? 0 : 10;
@@ -50,7 +56,7 @@ class OrderController extends Controller
       'shipping_zip' => 'required|string|max:20',
     ]);
 
-    $cart = session()->get('cart', []);
+    $cart = $this->cartService->getCart();
 
     if (empty($cart)) {
       return redirect('/shop')->with('error', 'Your cart is empty.');
@@ -58,11 +64,8 @@ class OrderController extends Controller
 
     // Calculate totals
     $subtotal = 0;
-    foreach ($cart as $productId => $quantity) {
-      $product = Product::find($productId);
-      if ($product) {
-        $subtotal += $product->price * $quantity;
-      }
+    foreach ($cart as $item) {
+      $subtotal += $item['price'] * $item['quantity'];
     }
 
     $shipping_cost = $subtotal >= 100 ? 0 : 10;
@@ -78,6 +81,36 @@ class OrderController extends Controller
       'shipping_city' => $validated['shipping_city'],
       'shipping_state' => $validated['shipping_state'],
       'shipping_zip' => $validated['shipping_zip'],
+      'subtotal' => $subtotal,
+      'shipping_cost' => $shipping_cost,
+      'total' => $total,
+      'status' => 'confirmed',
+    ]);
+
+    // Create order items
+    foreach ($cart as $item) {
+      OrderItem::create([
+        'order_id' => $order->id,
+        'product_id' => $item['product_id'],
+        'product_name' => $item['product_name'],
+        'price' => $item['price'],
+        'quantity' => $item['quantity'],
+        'subtotal' => $item['price'] * $item['quantity'],
+      ]);
+    }
+
+    // Clear cart
+    $this->cartService->clearCart();
+
+    return redirect()->route('order.confirmation', $order)->with('success', 'Order placed successfully!');
+  }
+
+  public function confirmation(Order $order)
+  {
+    return view('checkout.confirmation', compact('order'));
+  }
+}
+
       'subtotal' => $subtotal,
       'shipping_cost' => $shipping_cost,
       'total' => $total,

@@ -3,26 +3,35 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Services\CartService;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+  protected $cartService;
+
+  public function __construct(CartService $cartService)
+  {
+    $this->cartService = $cartService;
+  }
+
   public function index()
   {
-    $cart = session()->get('cart', []);
+    $cart = $this->cartService->getCart();
     $total = 0;
     $items = [];
 
-    foreach ($cart as $productId => $quantity) {
-      $product = Product::find($productId);
-      if ($product) {
-        $items[] = [
-          'product' => $product,
-          'quantity' => $quantity,
-          'subtotal' => $product->price * $quantity,
-        ];
-        $total += $product->price * $quantity;
-      }
+    foreach ($cart as $key => $item) {
+      $items[] = [
+        'key' => $key,
+        'product_id' => $item['product_id'],
+        'product_name' => $item['product_name'],
+        'price' => $item['price'],
+        'quantity' => $item['quantity'],
+        'size' => $item['size'],
+        'subtotal' => $item['price'] * $item['quantity'],
+      ];
+      $total += $item['price'] * $item['quantity'];
     }
 
     return view('cart.index', compact('items', 'total', 'cart'));
@@ -33,24 +42,28 @@ class CartController extends Controller
     $validated = $request->validate([
       'product_id' => 'required|exists:products,id',
       'quantity' => 'required|integer|min:1|max:99',
+      'size' => 'required|string',
     ]);
 
-    $cart = session()->get('cart', []);
-    $productId = $validated['product_id'];
-    $quantity = $validated['quantity'];
-
-    if (isset($cart[$productId])) {
-      $cart[$productId] += $quantity;
-    } else {
-      $cart[$productId] = $quantity;
+    $product = Product::find($validated['product_id']);
+    if (!$product) {
+      return response()->json(['success' => false, 'message' => 'Product not found'], 404);
     }
 
-    session()->put('cart', $cart);
+    $this->cartService->addToCart(
+      $validated['product_id'],
+      $validated['quantity'],
+      $validated['size'],
+      $product->name,
+      $product->price
+    );
+
+    $cartCount = $this->cartService->getCartCount();
 
     return response()->json([
       'success' => true,
       'message' => 'Product added to cart',
-      'cartCount' => array_sum($cart),
+      'cartCount' => $cartCount,
     ]);
   }
 
@@ -58,16 +71,16 @@ class CartController extends Controller
   {
     $validated = $request->validate([
       'product_id' => 'required|exists:products,id',
+      'size' => 'required|string',
     ]);
 
-    $cart = session()->get('cart', []);
-    unset($cart[$validated['product_id']]);
-    session()->put('cart', $cart);
+    $this->cartService->removeFromCart($validated['product_id'], $validated['size']);
+    $cartCount = $this->cartService->getCartCount();
 
     return response()->json([
       'success' => true,
       'message' => 'Product removed from cart',
-      'cartCount' => array_sum($cart),
+      'cartCount' => $cartCount,
     ]);
   }
 
@@ -75,24 +88,22 @@ class CartController extends Controller
   {
     $validated = $request->validate([
       'product_id' => 'required|exists:products,id',
+      'size' => 'required|string',
       'quantity' => 'required|integer|min:0|max:99',
     ]);
 
-    $cart = session()->get('cart', []);
-    $productId = $validated['product_id'];
+    $this->cartService->updateQuantity(
+      $validated['product_id'],
+      $validated['size'],
+      $validated['quantity']
+    );
 
-    if ($validated['quantity'] <= 0) {
-      unset($cart[$productId]);
-    } else {
-      $cart[$productId] = $validated['quantity'];
-    }
-
-    session()->put('cart', $cart);
+    $cartCount = $this->cartService->getCartCount();
 
     return response()->json([
       'success' => true,
       'message' => 'Cart updated',
-      'cartCount' => array_sum($cart),
+      'cartCount' => $cartCount,
     ]);
   }
 }

@@ -1,4 +1,4 @@
-function removeFromCart(productId) {
+function removeFromCart(productId, size) {
   if (confirm('Remove this item from your cart?')) {
     fetch(window.cartConfig.removeUrl, {
       method: 'POST',
@@ -8,6 +8,7 @@ function removeFromCart(productId) {
       },
       body: JSON.stringify({
         product_id: productId,
+        size: size,
       }),
     })
       .then(response => response.json())
@@ -22,7 +23,7 @@ function removeFromCart(productId) {
   }
 }
 
-function updateQuantity(productId, quantity) {
+function updateQuantity(productId, size, quantity) {
   fetch(window.cartConfig.updateUrl, {
     method: 'POST',
     headers: {
@@ -31,6 +32,7 @@ function updateQuantity(productId, quantity) {
     },
     body: JSON.stringify({
       product_id: productId,
+      size: size,
       quantity: parseInt(quantity),
     }),
   })
@@ -54,6 +56,7 @@ function addToCart(productId) {
     return;
   }
 
+  const size = sizeSelect ? sizeSelect.value : '';
   const quantityInput = document.getElementById(`quantity-${productId}`);
   const quantity = quantityInput ? parseInt(quantityInput.value) || 1 : 1;
 
@@ -66,6 +69,7 @@ function addToCart(productId) {
     body: JSON.stringify({
       product_id: productId,
       quantity: quantity,
+      size: size,
     }),
   })
     .then(response => response.json())

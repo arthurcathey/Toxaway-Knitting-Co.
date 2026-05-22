@@ -22,12 +22,12 @@
           <div class="card p-4 sm:p-6 border-l-4 border-l-stone-900">
             <div class="flex justify-between items-start mb-3 sm:mb-4">
               <div>
-                <h3 class="text-stone-900 text-xs sm:text-sm font-bold mb-1">{{ $item['product']->name }}</h3>
-                <p class="text-stone-600 text-xs">{{ $item['product']->category }}</p>
+                <h3 class="text-stone-900 text-xs sm:text-sm font-bold mb-1">{{ $item['product_name'] }}</h3>
+                <p class="text-stone-600 text-xs">Size: {{ $item['size'] }}</p>
               </div>
               <button
                 type="button"
-                data-remove-from-cart="{{ $item['product']->id }}"
+                onclick="removeFromCart({{ $item['product_id'] }}, '{{ $item['size'] }}')"
                 class="text-stone-600 hover:text-stone-900 transition text-xs">
                 ✕
               </button>
@@ -35,16 +35,17 @@
 
             <div class="flex justify-between items-end">
               <div>
-                <p class="text-stone-600 text-xs mb-2">Price: <span class="font-bold text-stone-900">${{ number_format($item['product']->price, 2) }}</span></p>
+                <p class="text-stone-600 text-xs mb-2">Price: <span class="font-bold text-stone-900">${{ number_format($item['price'], 2) }}</span></p>
                 <div class="flex items-center gap-2">
-                  <label for="qty-{{ $item['product']->id }}" class="text-xs text-stone-600">Qty:</label>
+                  <label for="qty-{{ $item['key'] }}" class="text-xs text-stone-600">Qty:</label>
                   <input
                     type="number"
-                    id="qty-{{ $item['product']->id }}"
+                    id="qty-{{ $item['key'] }}"
                     value="{{ $item['quantity'] }}"
                     min="1"
                     max="99"
-                    data-product-id="{{ $item['product']->id }}"
+                    data-product-id="{{ $item['product_id'] }}"
+                    data-size="{{ $item['size'] }}"
                     class="quantity-input w-12 px-2 py-1 border border-stone-300 rounded text-xs text-stone-900 focus:outline-none focus:border-stone-900">
                 </div>
               </div>
