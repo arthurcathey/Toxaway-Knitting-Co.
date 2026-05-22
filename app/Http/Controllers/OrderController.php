@@ -110,36 +110,3 @@ class OrderController extends Controller
     return view('checkout.confirmation', compact('order'));
   }
 }
-
-      'subtotal' => $subtotal,
-      'shipping_cost' => $shipping_cost,
-      'total' => $total,
-      'status' => 'confirmed',
-    ]);
-
-    // Create order items
-    foreach ($cart as $productId => $quantity) {
-      $product = Product::find($productId);
-      if ($product) {
-        OrderItem::create([
-          'order_id' => $order->id,
-          'product_id' => $product->id,
-          'product_name' => $product->name,
-          'price' => $product->price,
-          'quantity' => $quantity,
-          'subtotal' => $product->price * $quantity,
-        ]);
-      }
-    }
-
-    // Clear cart
-    session()->forget('cart');
-
-    return redirect()->route('order.confirmation', $order)->with('success', 'Order placed successfully!');
-  }
-
-  public function confirmation(Order $order)
-  {
-    return view('checkout.confirmation', compact('order'));
-  }
-}
