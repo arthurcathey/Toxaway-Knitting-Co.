@@ -106,4 +106,14 @@ class CartController extends Controller
       'cartCount' => $cartCount,
     ]);
   }
+
+  /**
+   * Get the current cart count without rendering the full cart page.
+   * Useful for initializing the cart count on page load.
+   */
+  public function count()
+  {
+    $cartCount = $this->cartService->getCartCount();
+    return response()->json(['cartCount' => $cartCount]);
+  }
 }

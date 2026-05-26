@@ -46,6 +46,7 @@ Route::get('/shop/{product}', [ProductController::class, 'show'])->name('product
 
 // Cart Routes (Public - sessions work for all users)
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');

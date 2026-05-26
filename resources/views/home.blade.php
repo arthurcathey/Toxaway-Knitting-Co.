@@ -38,28 +38,46 @@
   <section class="section-py container-fluid">
     <h2 class="mb-8 sm:mb-12">FEATURED COLLECTION</h2>
     <div class="grid-3col">
-      <div class="card p-4 sm:p-6">
-        <div class="bg-stone-200 w-full aspect-square mb-4 flex items-center justify-center text-xs text-stone-600">[Heavyweight Sweater]</div>
-        <h3 class="text-stone-900 mb-2 sm:mb-3 text-xs sm:text-sm">Wool Sweater — Heavyweight</h3>
-        <p class="text-stone-600 leading-relaxed mb-3 sm:mb-4 text-xs">100% merino wool. Perfect for cool weather and outdoor work.</p>
-        <p class="text-xs font-bold mb-3 sm:mb-4">$89.99</p>
-        <button class="btn-primary w-full">ADD TO CART</button>
+      <div class="card">
+        <div class="bg-stone-200 w-full aspect-square flex items-center justify-center text-xs text-stone-600">[Heavyweight Sweater]</div>
+        <div class="p-4 sm:p-6">
+          <h3 class="text-stone-900 mb-2 sm:mb-3 text-xs sm:text-sm">Wool Sweater — Heavyweight</h3>
+          <p class="text-stone-600 leading-relaxed mb-3 sm:mb-4 text-xs">100% merino wool. Perfect for cool weather and outdoor work.</p>
+          <div class="flex justify-between items-center mb-3 sm:mb-4 text-xs">
+            <span class="font-bold">$89.99</span>
+            <span class="text-stone-600">In Stock</span>
+          </div>
+          <a href="/shop/wool-sweater-heavyweight" class="btn-primary w-full text-center block text-xs">SELECT OPTIONS</a>
+        </div>
       </div>
 
-      <div class="card p-4 sm:p-6">
-        <div class="bg-stone-200 w-full aspect-square mb-4 flex items-center justify-center text-xs text-stone-600">[Riding Sweater]</div>
-        <h3 class="text-stone-900 mb-2 sm:mb-3 text-xs sm:text-sm">Riding Sweater — Merino</h3>
-        <p class="text-stone-600 leading-relaxed mb-3 sm:mb-4 text-xs">Designed for equestrian enthusiasts. Breathable and durable.</p>
-        <p class="text-xs font-bold mb-3 sm:mb-4">$129.99</p>
-        <button class="btn-primary w-full">ADD TO CART</button>
+      <div class="card">
+        <div class="bg-stone-200 w-full aspect-square flex items-center justify-center text-xs text-stone-600">[Riding Sweater]</div>
+        <div class="p-4 sm:p-6">
+          <h3 class="text-stone-900 mb-2 sm:mb-3 text-xs sm:text-sm">Riding Sweater — Merino</h3>
+          <p class="text-stone-600 leading-relaxed mb-3 sm:mb-4 text-xs">Designed for equestrian enthusiasts. Breathable and durable.</p>
+          <div class="flex justify-between items-center mb-3 sm:mb-4 text-xs">
+            <span class="font-bold">$129.99</span>
+            <span class="text-stone-600">In Stock</span>
+          </div>
+          <a href="/shop/riding-sweater-merino" class="btn-primary w-full text-center block text-xs">SELECT OPTIONS</a>
+        </div>
       </div>
 
-      <div class="card p-4 sm:p-6">
-        <div class="bg-stone-200 w-full aspect-square mb-4 flex items-center justify-center text-xs text-stone-600">[Custom Jacket]</div>
-        <h3 class="text-stone-900 mb-2 sm:mb-3 text-xs sm:text-sm">Custom Varsity Jacket</h3>
-        <p class="text-stone-600 leading-relaxed mb-3 sm:mb-4 text-xs">Fully personalized design. Consultations available.</p>
-        <p class="text-xs font-bold mb-3 sm:mb-4">QUOTE</p>
-        <a href="/custom-jacket" class="btn-primary block w-full text-center">REQUEST QUOTE</a>
+      <div class="card">
+        <div class="bg-stone-200 w-full aspect-square flex items-center justify-center text-xs text-stone-600">[Custom Jacket]</div>
+        <div class="p-4 sm:p-6">
+          <h3 class="text-stone-900 mb-2 sm:mb-3 text-xs sm:text-sm">Custom Varsity Jacket</h3>
+          <p class="text-stone-600 leading-relaxed mb-3 sm:mb-4 text-xs">Fully personalized design. Consultations available.</p>
+          <div class="flex justify-between items-center mb-3 sm:mb-4 text-xs">
+            <span class="font-bold">CUSTOM QUOTE</span>
+            <span class="text-stone-600">Custom</span>
+          </div>
+          <div class="space-y-2">
+            <a href="/custom-jacket" class="btn-primary w-full text-center block text-xs">START BUILDER</a>
+            <a href="/shop/custom-varsity-jacket" class="btn-secondary w-full text-center block text-xs">LEARN MORE</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>

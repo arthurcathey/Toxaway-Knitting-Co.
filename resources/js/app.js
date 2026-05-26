@@ -47,13 +47,35 @@ function updateCartCount(count) {
   }
 }
 
-// Initialize cart count from session on page load
+// Initialize cart count from server on page load
 document.addEventListener('DOMContentLoaded', () => {
-  // Get cart count from localStorage or session
-  const cartCount = localStorage.getItem('cartCount') || 0;
-  if (cartCount > 0) {
-    updateCartCount(cartCount);
-  }
+  // Always fetch the actual cart count from the server to ensure accuracy
+  // Add timestamp to prevent caching
+  const timestamp = new Date().getTime();
+  fetch(`/cart/count?t=${timestamp}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      const cartCount = parseInt(data.cartCount) || 0;
+      // Update both localStorage and the display
+      localStorage.setItem('cartCount', cartCount);
+      updateCartCount(cartCount);
+    })
+    .catch(error => {
+      // Fallback to localStorage if fetch fails
+      console.warn('Failed to fetch cart count from server:', error);
+      const cartCount = parseInt(localStorage.getItem('cartCount')) || 0;
+      if (cartCount > 0) {
+        updateCartCount(cartCount);
+      } else {
+        // Clear cart if no items
+        updateCartCount(0);
+      }
+    });
 
   // Handle size selection - disable add to cart button until size is chosen
   document.querySelectorAll('[data-add-to-cart]').forEach(button => {
