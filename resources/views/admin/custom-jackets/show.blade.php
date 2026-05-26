@@ -19,7 +19,7 @@
 
     <!-- Success Message -->
     @if (session('success'))
-    <div class="mb-8 p-4 bg-green-50 border border-green-300 text-green-700 rounded-lg">
+    <div class="mb-8 p-4 bg-blue-50 border border-blue-300 text-blue-700 rounded-lg">
       {{ session('success') }}
     </div>
     @endif
@@ -74,7 +74,7 @@
                 $colorClasses = match($request->primary_color) {
                 'Black' => 'bg-black',
                 'Navy Blue' => 'bg-blue-900',
-                'Forest Green' => 'bg-green-700',
+                'Slate Blue' => 'bg-blue-700',
                 'Burgundy' => 'bg-red-900',
                 'Cream' => 'bg-yellow-50',
                 'Charcoal Gray' => 'bg-gray-700',
@@ -92,7 +92,7 @@
                 $secondaryClasses = match($request->secondary_color) {
                 'Black' => 'bg-black',
                 'Navy Blue' => 'bg-blue-900',
-                'Forest Green' => 'bg-green-700',
+                'Slate Blue' => 'bg-blue-700',
                 'Burgundy' => 'bg-red-900',
                 'Cream' => 'bg-yellow-50',
                 'Charcoal Gray' => 'bg-gray-700',
@@ -164,7 +164,7 @@
           <div class="space-y-4">
             <div class="flex gap-4">
               <div class="text-center">
-                <div class="w-3 h-3 bg-green-500 rounded-full mx-auto mb-2"></div>
+                <div class="w-3 h-3 bg-blue-500 rounded-full mx-auto mb-2"></div>
               </div>
               <div>
                 <p class="text-xs font-bold uppercase tracking-wider text-stone-600">Submitted</p>
@@ -253,7 +253,7 @@
             @if ($request->quoted_price)
             <div>
               <p class="text-xs font-bold text-stone-600 uppercase tracking-wider mb-1">Quoted Price</p>
-              <p class="text-lg font-bold text-green-600">${{ number_format($request->quoted_price, 2) }}</p>
+              <p class="text-lg font-bold text-blue-600">${{ number_format($request->quoted_price, 2) }}</p>
             </div>
             @endif
             @if ($request->quoted_at)

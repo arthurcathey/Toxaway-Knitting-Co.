@@ -9,7 +9,7 @@
     </div>
 
     @if (session('success'))
-    <div class="mb-12 rounded-lg bg-green-50 p-4 text-green-600">
+    <div class="mb-12 rounded-lg bg-blue-50 p-4 text-blue-600">
       {{ session('success') }}
     </div>
     @endif
@@ -22,7 +22,7 @@
       </div>
       <div class="card">
         <div class="text-sm text-stone-600 mb-1">In Stock</div>
-        <div class="text-3xl font-bold text-green-600">{{ $inStockProducts }}</div>
+        <div class="text-3xl font-bold text-blue-600">{{ $inStockProducts }}</div>
       </div>
       <div class="card">
         <div class="text-sm text-stone-600 mb-1">Total Users</div>
@@ -50,9 +50,9 @@
           <div class="text-sm text-blue-600 mb-1">Quoted</div>
           <div class="text-3xl font-bold text-blue-700">{{ $quotedRequests }}</div>
         </a>
-        <a href="{{ route('admin.custom-jackets.index', ['status' => 'completed']) }}" class="card hover:ring-2 hover:ring-green-500 transition cursor-pointer">
-          <div class="text-sm text-green-600 mb-1">Completed</div>
-          <div class="text-3xl font-bold text-green-700">{{ $completedRequests }}</div>
+        <a href="{{ route('admin.custom-jackets.index', ['status' => 'completed']) }}" class="card hover:ring-2 hover:ring-blue-500 transition cursor-pointer">
+          <div class="text-sm text-blue-600 mb-1">Completed</div>
+          <div class="text-3xl font-bold text-blue-700">{{ $completedRequests }}</div>
         </a>
       </div>
     </div>

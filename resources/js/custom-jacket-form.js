@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const colorHexMap = {
         'Black': '#1a1a1a',
         'Navy Blue': '#001f4d',
-        'Forest Green': '#0b3d2c',
+        'Slate Blue': '#003d99',
         'Burgundy': '#800020',
         'Cream': '#fffdd0',
         'Charcoal Gray': '#36454f',
@@ -237,8 +237,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     field.classList.remove(
                         'border-red-500',
                         'bg-red-50',
-                        'border-green-500',
-                        'bg-green-50'
+                        'border-blue-500',
+                        'bg-blue-50'
                     );
                     const feedbackEl = field.parentElement.querySelector('.field-feedback');
                     if (feedbackEl) feedbackEl.innerHTML = '';

@@ -13,7 +13,7 @@
 
     <!-- Success Message -->
     @if (session('success'))
-    <div class="mb-8 p-4 bg-green-50 border border-green-300 text-green-700 rounded-lg">
+    <div class="mb-8 p-4 bg-blue-50 border border-blue-300 text-blue-700 rounded-lg">
       {{ session('success') }}
     </div>
     @endif
@@ -127,7 +127,7 @@
                   <option value="">-- Select Color --</option>
                   <option value="Black" @selected(old('primary_color')==='Black' )>Black</option>
                   <option value="Navy Blue" @selected(old('primary_color')==='Navy Blue' )>Navy Blue</option>
-                  <option value="Forest Green" @selected(old('primary_color')==='Forest Green' )>Forest Green</option>
+                  <option value="Slate Blue" @selected(old('primary_color')==='Slate Blue' )>Slate Blue</option>
                   <option value="Burgundy" @selected(old('primary_color')==='Burgundy' )>Burgundy</option>
                   <option value="Cream" @selected(old('primary_color')==='Cream' )>Cream</option>
                   <option value="Charcoal Gray" @selected(old('primary_color')==='Charcoal Gray' )>Charcoal Gray</option>
@@ -144,7 +144,7 @@
                   <option value="">-- Select Color --</option>
                   <option value="Black" @selected(old('secondary_color')==='Black' )>Black</option>
                   <option value="Navy Blue" @selected(old('secondary_color')==='Navy Blue' )>Navy Blue</option>
-                  <option value="Forest Green" @selected(old('secondary_color')==='Forest Green' )>Forest Green</option>
+                  <option value="Slate Blue" @selected(old('secondary_color')==='Slate Blue' )>Slate Blue</option>
                   <option value="Burgundy" @selected(old('secondary_color')==='Burgundy' )>Burgundy</option>
                   <option value="Cream" @selected(old('secondary_color')==='Cream' )>Cream</option>
                   <option value="Charcoal Gray" @selected(old('secondary_color')==='Charcoal Gray' )>Charcoal Gray</option>

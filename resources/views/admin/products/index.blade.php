@@ -14,7 +14,7 @@
     </div>
 
     @if (session('success'))
-    <div class="mb-12 rounded-lg bg-green-50 p-4 text-green-600">
+    <div class="mb-12 rounded-lg bg-blue-50 p-4 text-blue-600">
       {{ session('success') }}
     </div>
     @endif
@@ -42,7 +42,7 @@
             <td class="px-4 py-3 text-gray-600">{{ $product->category }}</td>
             <td class="px-4 py-3 font-semibold">${{ number_format($product->price, 2) }}</td>
             <td class="px-4 py-3">
-              <span class="px-3 py-1 rounded-full text-xs font-semibold {{ $product->in_stock ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
+              <span class="px-3 py-1 rounded-full text-xs font-semibold {{ $product->in_stock ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700' }}">
                 {{ $product->in_stock ? 'In Stock' : 'Out of Stock' }}
               </span>
             </td>

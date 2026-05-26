@@ -13,7 +13,7 @@
 
     <!-- Success Message -->
     @if (session('success'))
-    <div class="mb-8 p-4 bg-green-50 border border-green-300 text-green-700 rounded-lg">
+    <div class="mb-8 p-4 bg-blue-50 border border-blue-300 text-blue-700 rounded-lg">
       {{ session('success') }}
     </div>
     @endif
@@ -45,9 +45,9 @@
         <div class="text-xs font-semibold text-indigo-600 uppercase tracking-wider">Prod</div>
       </a>
 
-      <a href="{{ route('admin.custom-jackets.index', ['status' => 'completed']) }}" class="card {{ $currentStatus === 'completed' ? 'ring-2 ring-green-500' : '' }} hover:ring-2 hover:ring-green-500 transition cursor-pointer">
-        <div class="text-2xl font-bold text-green-700">{{ $stats['completed'] }}</div>
-        <div class="text-xs font-semibold text-green-600 uppercase tracking-wider">Done</div>
+      <a href="{{ route('admin.custom-jackets.index', ['status' => 'completed']) }}" class="card {{ $currentStatus === 'completed' ? 'ring-2 ring-blue-500' : '' }} hover:ring-2 hover:ring-blue-500 transition cursor-pointer">
+        <div class="text-2xl font-bold text-blue-700">{{ $stats['completed'] }}</div>
+        <div class="text-xs font-semibold text-blue-600 uppercase tracking-wider">Done</div>
       </a>
 
       <a href="{{ route('admin.custom-jackets.index', ['status' => 'cancelled']) }}" class="card {{ $currentStatus === 'cancelled' ? 'ring-2 ring-red-500' : '' }} hover:ring-2 hover:ring-red-500 transition cursor-pointer">

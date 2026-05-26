@@ -115,7 +115,7 @@
         @endif
 
         @if (session('success'))
-        <div class="mt-4 p-4 bg-green-100 border border-green-300 text-green-700 text-xs">
+        <div class="mt-4 p-4 bg-blue-100 border border-blue-300 text-blue-700 text-xs">
           {{ session('success') }}
         </div>
         @endif

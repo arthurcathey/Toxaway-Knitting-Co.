@@ -14,12 +14,12 @@
   <section class="section-py container-fluid">
     <div class="max-w-2xl mx-auto">
       <!-- Success Message -->
-      <div class="card p-6 sm:p-8 mb-8 bg-green-50 border-l-4 border-l-green-600">
+      <div class="card p-6 sm:p-8 mb-8 bg-blue-50 border-l-4 border-l-blue-600">
         <div class="flex items-start gap-4">
           <div class="text-2xl">✓</div>
           <div>
-            <h2 class="text-lg sm:text-xl font-bold text-green-700 mb-2">Payment Received</h2>
-            <p class="text-sm text-green-600">Your order has been confirmed and is being prepared for shipment.</p>
+            <h2 class="text-lg sm:text-xl font-bold text-blue-700 mb-2">Payment Received</h2>
+            <p class="text-sm text-blue-600">Your order has been confirmed and is being prepared for shipment.</p>
           </div>
         </div>
       </div>
