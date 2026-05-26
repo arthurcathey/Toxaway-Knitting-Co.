@@ -150,7 +150,7 @@
             <div>
               <label class="block text-xs font-bold uppercase tracking-wider text-stone-600 mb-2">Reference Image</label>
               <a href="{{ asset('storage/' . $request->inspiration_image) }}" target="_blank" class="inline-block">
-                <img src="{{ asset('storage/' . $request->inspiration_image) }}" alt="Reference" class="max-w-xs rounded border border-stone-300 hover:border-stone-500">
+                <img src="{{ asset('storage/' . $request->inspiration_image) }}" alt="Reference" class="max-w-xs rounded border border-stone-300 hover:border-stone-500" loading="lazy" decoding="async">
               </a>
             </div>
             @endif

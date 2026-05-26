@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CustomJacketRequest;
+use App\Services\ImageProcessor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Mail\CustomJacketInquiry;
@@ -45,9 +46,13 @@ class CustomJacketController extends Controller
     $validated['sizes'] = !empty($validated['sizes']) ? $validated['sizes'] : null;
 
     if ($request->hasFile('inspiration_image')) {
-      $filename = time() . '_' . Str::random(10) . '.' . $request->file('inspiration_image')->getClientOriginalExtension();
-      $path = $request->file('inspiration_image')->storeAs('custom-jackets', $filename, 'public');
-      $validated['inspiration_image'] = $path;
+      $validated['inspiration_image'] = ImageProcessor::process(
+        $request->file('inspiration_image'),
+        'custom-jackets',
+        800,  // max width
+        800,  // max height
+        75    // quality (lower for reference images)
+      );
     }
 
     if (Auth::check()) {

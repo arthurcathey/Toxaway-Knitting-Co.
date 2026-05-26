@@ -88,7 +88,7 @@
           @if ($product->image)
           <div class="mb-4">
             <p class="text-sm text-gray-600 mb-2">Current Image:</p>
-            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-32 h-32 object-cover rounded-lg border border-gray-300">
+            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-32 h-32 object-cover rounded-lg border border-gray-300" loading="lazy" decoding="async">
           </div>
           @endif
           <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"

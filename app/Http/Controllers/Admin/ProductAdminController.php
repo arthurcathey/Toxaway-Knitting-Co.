@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Services\ImageProcessor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -35,11 +36,15 @@ class ProductAdminController extends Controller
       'in_stock' => 'boolean',
     ]);
 
-    // Handle file upload with secure filename
+    // Handle file upload with image optimization
     if ($request->hasFile('image')) {
-      $filename = time() . '_' . Str::random(10) . '.' . $request->file('image')->getClientOriginalExtension();
-      $path = $request->file('image')->storeAs('products', $filename, 'public');
-      $validated['image'] = $path;
+      $validated['image'] = ImageProcessor::process(
+        $request->file('image'),
+        'products',
+        1200,  // max width
+        1200,  // max height
+        80     // quality
+      );
     }
 
     // Sanitize description input
@@ -72,15 +77,19 @@ class ProductAdminController extends Controller
       'in_stock' => 'boolean',
     ]);
 
-    // Handle file upload with secure filename
+    // Handle file upload with image optimization
     if ($request->hasFile('image')) {
       // Delete old image if it exists
       if ($product->image) {
         Storage::disk('public')->delete($product->image);
       }
-      $filename = time() . '_' . Str::random(10) . '.' . $request->file('image')->getClientOriginalExtension();
-      $path = $request->file('image')->storeAs('products', $filename, 'public');
-      $validated['image'] = $path;
+      $validated['image'] = ImageProcessor::process(
+        $request->file('image'),
+        'products',
+        1200,  // max width
+        1200,  // max height
+        80     // quality
+      );
     }
 
     // Sanitize description input

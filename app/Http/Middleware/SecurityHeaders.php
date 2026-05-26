@@ -26,18 +26,21 @@ class SecurityHeaders
     // Enable XSS protection in older browsers
     $response->header('X-XSS-Protection', '1; mode=block');
 
-    // Content Security Policy - Strict but allows Stripe
-    $response->header(
-      'Content-Security-Policy',
-      "default-src 'self'; " .
-        "script-src 'self' 'unsafe-inline' https://js.stripe.com https://cdn.jsdelivr.net; " .
-        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " .
-        "img-src 'self' data: https:; " .
-        "font-src 'self' data: https://cdn.jsdelivr.net; " .
-        "connect-src 'self' https://api.stripe.com https://m.stripe.com; " .
-        "frame-src https://js.stripe.com https://stripe.com; " .
-        "upgrade-insecure-requests"
-    );
+    // Content Security Policy - Disabled in development (Vite IPv6 incompatible), strict in production
+    if (!app()->environment('local', 'development')) {
+      // Production - strict CSP
+      $response->header(
+        'Content-Security-Policy',
+        "default-src 'self'; " .
+          "script-src 'self' 'unsafe-inline' https://js.stripe.com https://cdn.jsdelivr.net; " .
+          "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " .
+          "img-src 'self' data: https:; " .
+          "font-src 'self' data: https://cdn.jsdelivr.net; " .
+          "connect-src 'self' https://api.stripe.com https://m.stripe.com; " .
+          "frame-src https://js.stripe.com https://stripe.com; " .
+          "upgrade-insecure-requests"
+      );
+    }
 
     // Referrer Policy - Don't send referrer to cross-origin sites
     $response->header('Referrer-Policy', 'strict-origin-when-cross-origin');
