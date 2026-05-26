@@ -63,6 +63,77 @@
 
           <hr class="border-stone-300 my-6 sm:my-8">
 
+          <!-- Payment Information -->
+          <h3 class="text-stone-900 font-semibold mb-4 sm:mb-6 text-sm">PAYMENT INFORMATION</h3>
+
+          <!-- Cardholder Name -->
+          <div>
+            <label for="cardholder_name" class="block text-xs sm:text-sm text-stone-600 mb-2">CARDHOLDER NAME *</label>
+            <input
+              type="text"
+              id="cardholder_name"
+              name="cardholder_name"
+              required
+              class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-stone-300 rounded text-stone-900 text-xs sm:text-sm focus:outline-none focus:border-stone-900 {{ $errors->has('cardholder_name') ? 'border-red-500' : '' }}"
+              value="{{ old('cardholder_name') }}">
+            @if($errors->has('cardholder_name'))
+            <p class="text-red-600 text-xs mt-1">{{ $errors->first('cardholder_name') }}</p>
+            @endif
+          </div>
+
+          <!-- Card Number -->
+          <div>
+            <label for="card_number" class="block text-xs sm:text-sm text-stone-600 mb-2">CARD NUMBER *</label>
+            <input
+              type="text"
+              id="card_number"
+              name="card_number"
+              placeholder="1234 5678 9012 3456"
+              required
+              maxlength="19"
+              class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-stone-300 rounded text-stone-900 text-xs sm:text-sm focus:outline-none focus:border-stone-900 {{ $errors->has('card_number') ? 'border-red-500' : '' }}"
+              value="{{ old('card_number') }}">
+            @if($errors->has('card_number'))
+            <p class="text-red-600 text-xs mt-1">{{ $errors->first('card_number') }}</p>
+            @endif
+          </div>
+
+          <!-- Expiration & CVV -->
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="card_expiry" class="block text-xs sm:text-sm text-stone-600 mb-2">EXPIRATION DATE *</label>
+              <input
+                type="text"
+                id="card_expiry"
+                name="card_expiry"
+                placeholder="MM/YY"
+                required
+                maxlength="5"
+                class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-stone-300 rounded text-stone-900 text-xs sm:text-sm focus:outline-none focus:border-stone-900 {{ $errors->has('card_expiry') ? 'border-red-500' : '' }}"
+                value="{{ old('card_expiry') }}">
+              @if($errors->has('card_expiry'))
+              <p class="text-red-600 text-xs mt-1">{{ $errors->first('card_expiry') }}</p>
+              @endif
+            </div>
+            <div>
+              <label for="card_cvv" class="block text-xs sm:text-sm text-stone-600 mb-2">CVV *</label>
+              <input
+                type="text"
+                id="card_cvv"
+                name="card_cvv"
+                placeholder="123"
+                required
+                maxlength="4"
+                class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-stone-300 rounded text-stone-900 text-xs sm:text-sm focus:outline-none focus:border-stone-900 {{ $errors->has('card_cvv') ? 'border-red-500' : '' }}"
+                value="{{ old('card_cvv') }}">
+              @if($errors->has('card_cvv'))
+              <p class="text-red-600 text-xs mt-1">{{ $errors->first('card_cvv') }}</p>
+              @endif
+            </div>
+          </div>
+
+          <hr class="border-stone-300 my-6 sm:my-8">
+
           <!-- Address -->
           <div>
             <label for="shipping_address" class="block text-xs sm:text-sm text-stone-600 mb-2">STREET ADDRESS *</label>

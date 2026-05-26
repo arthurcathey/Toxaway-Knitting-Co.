@@ -54,6 +54,10 @@ class OrderController extends Controller
       'shipping_city' => 'required|string|max:100',
       'shipping_state' => 'required|string|max:50',
       'shipping_zip' => 'required|string|max:20',
+      'cardholder_name' => 'required|string|max:255',
+      'card_number' => 'required|string|regex:/^\d{4}\s?\d{4}\s?\d{4}\s?\d{4}$/',
+      'card_expiry' => 'required|string|regex:/^\d{2}\/\d{2}$/',
+      'card_cvv' => 'required|string|regex:/^\d{3,4}$/',
     ]);
 
     $cart = $this->cartService->getCart();
