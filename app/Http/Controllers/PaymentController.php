@@ -172,7 +172,7 @@ class PaymentController extends Controller
 
         // Send confirmation email
         try {
-          Mail::to($validated['email'])->send(new OrderConfirmation($order));
+          Mail::to($validated['email'])->send(new OrderConfirmation($order, $validated['email']));
         } catch (\Exception $e) {
           Log::warning('Failed to send order confirmation: ' . $e->getMessage());
         }
