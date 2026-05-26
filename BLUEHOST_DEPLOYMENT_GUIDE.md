@@ -1,0 +1,405 @@
+# 🚀 Bluehost Deployment Guide - Toxaway Knitting Co.
+
+**Date**: May 26, 2026  
+**Status**: Ready for production  
+**Blocker**: Need domain name and Bluehost setup
+
+---
+
+## ✅ Pre-Deployment Checklist
+
+- [ ] Domain name purchased and pointed to Bluehost
+- [ ] Bluehost cPanel access
+- [ ] SSL certificate provisioned (AutoSSL - automatic)
+- [ ] Git repository on GitHub (for deployment)
+- [ ] Fresh Stripe live keys (pk_live_, sk_live_)
+
+---
+
+## 📋 Step 1: Bluehost cPanel Setup
+
+### 1.1 Access Your Bluehost Account
+1. Go to https://www.bluehost.com/
+2. Click **"Log in"** → **"cPanel"**
+3. Enter credentials
+4. You're in cPanel dashboard
+
+### 1.2 Point Domain to Bluehost
+1. In cPanel, find **"Addon Domains"** or **"Domains"**
+2. Create addon domain or point existing domain:
+   - Domain: `yourdomain.com`
+   - Document Root: `/public_html/toxaway-knitting` (or similar)
+3. Wait for DNS propagation (~15-30 min)
+
+### 1.3 Enable AutoSSL Certificate
+1. In cPanel, find **"AutoSSL"**
+2. Select your domain
+3. Click **"Issue"** or **"Install SSL"**
+4. Certificate auto-renews annually (Bluehost handles it)
+5. **Status**: `https://yourdomain.com` now works ✅
+
+---
+
+## 📁 Step 2: Set Up Laravel Directory
+
+### 2.1 Connect via FTP or SSH
+
+**Option A: FTP (easier)**
+1. In cPanel, find **"FTP Accounts"**
+2. Create FTP user: `toxaway_ftp`
+3. Set home directory: `/public_html`
+4. Connect with FileZilla:
+   - Host: `ftp.yourdomain.com`
+   - Username: `toxaway_ftp`
+   - Password: (created above)
+   - Port: 21
+
+**Option B: SSH (recommended)**
+1. In cPanel, find **"Terminal"** or use SSH client
+2. Command: `ssh username@yourdomain.com`
+3. Password: Your cPanel password
+
+### 2.2 Create App Directory Structure
+```bash
+# Via SSH/Terminal:
+cd /public_html
+mkdir toxaway-knitting
+cd toxaway-knitting
+```
+
+---
+
+## 🔄 Step 3: Deploy Code to Bluehost
+
+### 3.1 Option A: Git Clone (Recommended)
+```bash
+cd /public_html/toxaway-knitting
+
+# Clone your GitHub repository
+git clone https://github.com/YOUR_USERNAME/toxaway-knitting-co.git .
+
+# Install dependencies
+composer install --optimize-autoloader --no-dev
+
+# Install Node dependencies
+npm install
+
+# Build assets for production
+npm run build
+```
+
+### 3.2 Option B: Upload via FTP
+1. Use FileZilla to upload all project files
+2. Skip `node_modules/` and `vendor/` folders
+3. Run `composer install` and `npm run build` on server
+
+---
+
+## ⚙️ Step 4: Configure Environment (.env)
+
+### 4.1 Update .env for Production
+```bash
+# SSH into your server, then:
+cd /public_html/toxaway-knitting
+nano .env
+```
+
+Update these settings:
+```ini
+APP_NAME="Toxaway Knitting Co."
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://yourdomain.com
+
+DB_CONNECTION=mysql
+DB_HOST=localhost
+DB_PORT=3306
+DB_DATABASE=toxaway_db
+DB_USERNAME=toxaway_user
+DB_PASSWORD=your_secure_password
+
+STRIPE_PUBLIC_KEY=pk_live_your_live_public_key
+STRIPE_SECRET_KEY=sk_live_your_live_secret_key
+STRIPE_WEBHOOK_SECRET=whsec_live_your_webhook_secret
+
+MAIL_MAILER=mailgun
+MAIL_HOST=smtp.mailgun.org
+MAIL_PORT=587
+MAIL_USERNAME=your_mailgun_username
+MAIL_PASSWORD=your_mailgun_password
+MAIL_FROM_ADDRESS=support@yourdomain.com
+MAIL_FROM_NAME="Toxaway Knitting Co."
+```
+
+**Save**: Press `Ctrl+X`, then `Y`, then `Enter`
+
+---
+
+## 🗄️ Step 5: Database Setup
+
+### 5.1 Create Database in Bluehost
+1. In cPanel, find **"MySQL Databases"**
+2. **Create New Database**:
+   - Database Name: `toxaway_db`
+   - Create user:
+     - Username: `toxaway_user`
+     - Password: (strong password)
+   - Add user to database with **All Privileges**
+
+### 5.2 Run Migrations
+```bash
+# SSH into your server:
+cd /public_html/toxaway-knitting
+
+# Run migrations
+php artisan migrate --force
+
+# Seed products (optional)
+php artisan db:seed --class=ProductSeeder
+```
+
+---
+
+## 🔑 Step 6: Get Live Stripe Keys
+
+### 6.1 In Stripe Dashboard
+1. Go to https://dashboard.stripe.com
+2. Click **"Developers"** → **"API Keys"**
+3. Toggle: **"View test data"** → OFF
+4. Copy:
+   - **Publishable Key** (pk_live_...)
+   - **Secret Key** (sk_live_...)
+5. Paste into `.env` as shown in Step 4
+
+### 6.2 Configure Webhook
+1. In Stripe Dashboard: **Developers** → **Webhooks**
+2. Click **"Add Endpoint"**
+3. **Endpoint URL**: `https://yourdomain.com/webhook/stripe`
+4. **Events to send**: Select these:
+   - `charge.succeeded`
+   - `charge.failed`
+   - `charge.refunded`
+5. Copy **Signing secret** → Add to `.env` as `STRIPE_WEBHOOK_SECRET`
+
+---
+
+## 📧 Step 7: Email Configuration (Mailgun)
+
+### 7.1 Set Up Mailgun (Free Plan)
+1. Go to https://www.mailgun.com
+2. Sign up (free plan includes 5,000 emails/month)
+3. Add domain: `yourdomain.com`
+4. Verify domain (Bluehost DNS records):
+   - Add CNAME records shown by Mailgun
+5. Get credentials:
+   - SMTP Host: `smtp.mailgun.org`
+   - Username: `postmaster@yourdomain.com`
+   - Password: (generated by Mailgun)
+
+### 7.2 Update .env with Mailgun
+Already done in Step 4 - just verify MAIL_* variables
+
+### 7.3 Test Email
+```bash
+php artisan tinker
+Mail::raw('Test email', function ($m) { $m->to('your-email@gmail.com')->subject('Test'); });
+```
+
+---
+
+## 🔐 Step 8: Security & Permissions
+
+### 8.1 Set Correct Permissions
+```bash
+# SSH into server:
+cd /public_html/toxaway-knitting
+
+# Set directory permissions
+chmod 755 .
+chmod -R 755 public
+chmod -R 755 storage
+chmod -R 755 bootstrap/cache
+
+# Set file permissions
+chmod 644 .env
+
+# Create application key (if needed)
+php artisan key:generate
+```
+
+### 8.2 Hide Sensitive Files
+Create `.htaccess` in `/public_html/toxaway-knitting`:
+```apache
+<FilesMatch "^\.env|^\.git">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+```
+
+---
+
+## 🌐 Step 9: Configure Public Directory
+
+### 9.1 Set Document Root (Critical!)
+
+**Bluehost cPanel Method:**
+1. Go to **"Domains"** or **"Addon Domains"**
+2. For your domain, set **Document Root** to:
+   ```
+   /public_html/toxaway-knitting/public
+   ```
+3. This ensures only `/public` folder is web-accessible
+
+**OR via `.htaccess`** (Alternative):
+In `/public_html/toxaway-knitting/.htaccess`:
+```apache
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ /public/$1 [L]
+</IfModule>
+```
+
+---
+
+## ✅ Step 10: Final Verification
+
+### 10.1 Test Production URL
+```bash
+# From your local machine:
+curl https://yourdomain.com
+# Should show HTML homepage
+```
+
+### 10.2 Test Payment Form
+1. Open: `https://yourdomain.com/shop`
+2. Add item to cart
+3. Go to checkout
+4. Test with **4242 4242 4242 4242** (test card)
+5. Should process with live key validation
+
+### 10.3 Test SSL Certificate
+1. Go to: https://www.sslshopper.com/ssl-checker.html
+2. Enter: `yourdomain.com`
+3. Should show: ✅ **Certificate is valid**
+
+### 10.4 Check Logs
+```bash
+# SSH and check for errors:
+cd /public_html/toxaway-knitting
+tail -50 storage/logs/laravel.log
+```
+
+---
+
+## 🚨 Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| 404 on homepage | Check Document Root points to `/public` folder |
+| Blank white page | Enable PHP error logs, check `storage/logs/laravel.log` |
+| Database connection error | Verify DB_HOST, DB_USERNAME, DB_PASSWORD in .env |
+| SSL warning in browser | Run `php artisan config:cache` on server |
+| Emails not sending | Check Mailgun credentials, verify domain DNS records |
+| Stripe fails silently | Check `storage/logs/laravel.log` for API errors |
+| "Too many connections" error | Increase Bluehost MySQL connections in cPanel |
+
+---
+
+## 📋 Production Checklist - Before Launch
+
+- [ ] Domain purchased and DNS pointing to Bluehost
+- [ ] SSL certificate installed and valid (https://)
+- [ ] Laravel code deployed from GitHub
+- [ ] Database created and migrations applied
+- [ ] .env configured with production values
+- [ ] Stripe live keys configured (pk_live_, sk_live_)
+- [ ] Stripe webhook endpoint registered
+- [ ] Mailgun configured for email
+- [ ] Directory permissions set correctly (755, 644)
+- [ ] Document root points to `/public` folder
+- [ ] Cache cleared: `php artisan config:cache`
+- [ ] Test payment successful with real card (Stripe test mode)
+- [ ] Email confirmation received
+- [ ] HTTPS working (padlock icon in browser)
+- [ ] No errors in `storage/logs/laravel.log`
+
+---
+
+## 🎯 Post-Launch Tasks
+
+### Immediate (Day 1)
+1. Test complete purchase flow
+2. Verify emails send
+3. Monitor `storage/logs/laravel.log` for errors
+4. Check Stripe dashboard for transactions
+
+### Week 1
+1. Set up automated backups (Bluehost backup tools)
+2. Enable basic monitoring/alerts
+3. Test failure scenarios (declined cards, etc.)
+
+### Month 1
+1. Analyze payment success rate
+2. Optimize images if slow
+3. Set up analytics (Google Analytics)
+4. Plan feature updates
+
+---
+
+## 📞 Bluehost Support
+
+If you encounter issues:
+1. Bluehost Live Chat: Available 24/7
+2. Check cPanel Documentation
+3. See `storage/logs/laravel.log` for app errors
+4. Check Stripe Dashboard for payment issues
+
+---
+
+## 🔄 Deployment Commands (Summary)
+
+```bash
+# SSH into Bluehost
+ssh user@yourdomain.com
+
+# Navigate to app
+cd /public_html/toxaway-knitting
+
+# Deploy code
+git pull origin main
+
+# Install/update dependencies
+composer install --optimize-autoloader --no-dev
+npm install && npm run build
+
+# Run migrations
+php artisan migrate --force
+
+# Clear caches
+php artisan config:cache
+php artisan view:cache
+php artisan route:cache
+
+# Restart (if needed)
+php artisan cache:clear
+```
+
+---
+
+## Next Steps
+
+1. **Purchase domain** (if not already done)
+2. **Point domain to Bluehost** (DNS configuration)
+3. **Wait for SSL certificate** to auto-provision (~30 min)
+4. **Get live Stripe keys** from Stripe Dashboard
+5. **Deploy code** using git clone or FTP
+6. **Configure .env** with production values
+7. **Create database** and run migrations
+8. **Test payment** with live keys
+9. **Launch!** 🎉
+
+---
+
+**You're ready to go live!** The payment system is tested and working. This guide will get it into production.
+
