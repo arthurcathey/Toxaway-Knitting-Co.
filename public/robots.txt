@@ -1,2 +1,30 @@
+# Robots.txt for Toxaway Knitting Co.
+# Allow all search engines to crawl public pages
+
 User-agent: *
-Disallow:
+Allow: /
+
+# Disallow admin routes
+Disallow: /admin/
+
+# Disallow cart and checkout (private pages)
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /order/
+Disallow: /dashboard/
+
+# Disallow search-related URLs
+Disallow: /search
+
+# Allow Googlebot and Bingbot full access
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Point to sitemap
+Sitemap: https://toxawayknitting.com/sitemap.xml
+
+# Crawl delay (1 second between requests)
+Crawl-delay: 1

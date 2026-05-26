@@ -4,9 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>@yield('title') | Toxaway Knitting Co.</title>
+  <title>@yield('title', 'Toxaway Knitting Co. | Handmade American Knitwear')</title>
+  <link rel="canonical" href="{{ url()->current() }}">
   <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+
+  {!! $seo->getMetaTags() ?? '' !!}
+
   @vite(['resources/css/app.css', 'resources/js/config.js', 'resources/js/scroll.js', 'resources/js/app.js', 'resources/js/cart.js'])
+
+  {!! $seo->getStructuredData() ?? '' !!}
+
   <script>
     // Set up global cart configuration with Laravel routes
     window.cartConfig = {

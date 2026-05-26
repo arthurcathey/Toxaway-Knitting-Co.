@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ProductAdminController;
 use App\Http\Controllers\CustomJacketController;
+use App\Http\Controllers\SitemapController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,16 @@ use App\Http\Controllers\CustomJacketController;
 
 // Public Pages
 Route::get('/', function () {
+  view()->share(
+    'seo',
+    (new \App\Services\SeoService())
+      ->setTitle('Toxaway Knitting Co. | Handmade American Knitwear')
+      ->setDescription('Premium, heavyweight, American-made knitwear with meticulous attention to craft. Shop handcrafted sweaters and custom jackets made to last.')
+      ->setUrl(config('app.url'))
+      ->setKeywords(['handmade knitwear', 'American made', 'sweaters', 'custom jackets', 'wool clothing'])
+      ->setType('website')
+      ->setStructuredData(\App\Services\SeoService::organizationSchema())
+  );
   return view('home');
 })->name('home');
 
@@ -57,14 +68,41 @@ Route::post('/checkout', [OrderController::class, 'store'])->name('order.store')
 Route::get('/order/{order}', [OrderController::class, 'confirmation'])->name('order.confirmation');
 
 Route::get('/heritage', function () {
+  view()->share(
+    'seo',
+    (new \App\Services\SeoService())
+      ->setTitle('Our Heritage | Toxaway Knitting Co.')
+      ->setDescription('Learn about our brand story and commitment to American-made knitwear crafted with meticulous attention to detail and quality.')
+      ->setUrl(route('heritage'))
+      ->setKeywords(['heritage', 'American made', 'brand story', 'knitwear', 'craft'])
+      ->setStructuredData(\App\Services\SeoService::organizationSchema())
+  );
   return view('heritage');
 })->name('heritage');
 
 Route::get('/craftsmanship', function () {
+  view()->share(
+    'seo',
+    (new \App\Services\SeoService())
+      ->setTitle('Our Craftsmanship | Toxaway Knitting Co.')
+      ->setDescription('Discover our meticulous approach to knitwear production, materials sourcing, and quality control that makes Toxaway sweaters exceptional.')
+      ->setUrl(route('craftsmanship'))
+      ->setKeywords(['craftsmanship', 'quality', 'knitwear production', 'materials', 'handmade'])
+      ->setStructuredData(\App\Services\SeoService::organizationSchema())
+  );
   return view('craftsmanship');
 })->name('craftsmanship');
 
 Route::get('/contact', function () {
+  view()->share(
+    'seo',
+    (new \App\Services\SeoService())
+      ->setTitle('Contact Us | Toxaway Knitting Co.')
+      ->setDescription('Have questions? Get in touch with our team for sizing help, custom orders, or general inquiries about our handmade knitwear.')
+      ->setUrl(route('contact'))
+      ->setKeywords(['contact', 'support', 'customer service', 'inquiries'])
+      ->setStructuredData(\App\Services\SeoService::organizationSchema())
+  );
   return view('contact');
 })->name('contact');
 
@@ -98,6 +136,9 @@ Route::post('/contact', function (\Illuminate\Http\Request $request) {
 // Custom Jacket Routes
 Route::get('/custom-jacket', [CustomJacketController::class, 'show'])->name('custom-jacket.builder');
 Route::post('/custom-jacket', [CustomJacketController::class, 'store'])->name('custom-jacket.store');
+
+// SEO Routes
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 // Admin Routes (Protected)
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(function () {
