@@ -135,6 +135,46 @@ Route::post('/contact', function (\Illuminate\Http\Request $request) {
   return redirect('/contact')->with('success', 'Thank you for your message! We\'ll get back to you soon.');
 })->name('contact.store');
 
+// Legal Pages
+Route::get('/terms', function () {
+  view()->share(
+    'seo',
+    (new \App\Services\SeoService())
+      ->setTitle('Terms of Service | Toxaway Knitting Co.')
+      ->setDescription('Read our terms of service governing the use of Toxaway Knitting Co. website and purchases.')
+      ->setUrl(route('terms'))
+      ->setKeywords(['terms', 'conditions', 'legal', 'policies'])
+      ->setStructuredData(\App\Services\SeoService::organizationSchema())
+  );
+  return view('legal.terms');
+})->name('terms');
+
+Route::get('/privacy', function () {
+  view()->share(
+    'seo',
+    (new \App\Services\SeoService())
+      ->setTitle('Privacy Policy | Toxaway Knitting Co.')
+      ->setDescription('Learn how Toxaway Knitting Co. collects, uses, and protects your personal information.')
+      ->setUrl(route('privacy'))
+      ->setKeywords(['privacy', 'policy', 'data protection', 'GDPR'])
+      ->setStructuredData(\App\Services\SeoService::organizationSchema())
+  );
+  return view('legal.privacy');
+})->name('privacy');
+
+Route::get('/shipping', function () {
+  view()->share(
+    'seo',
+    (new \App\Services\SeoService())
+      ->setTitle('Shipping Information | Toxaway Knitting Co.')
+      ->setDescription('Learn about our shipping methods, rates, and delivery times for Toxaway Knitting Co. orders.')
+      ->setUrl(route('shipping'))
+      ->setKeywords(['shipping', 'delivery', 'rates', 'tracking'])
+      ->setStructuredData(\App\Services\SeoService::organizationSchema())
+  );
+  return view('legal.shipping');
+})->name('shipping');
+
 // Custom Jacket Routes
 Route::get('/custom-jacket', [CustomJacketController::class, 'show'])->name('custom-jacket.builder');
 Route::post('/custom-jacket', [CustomJacketController::class, 'store'])->name('custom-jacket.store');

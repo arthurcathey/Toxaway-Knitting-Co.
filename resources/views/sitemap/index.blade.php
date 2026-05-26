@@ -43,6 +43,28 @@
     <priority>0.8</priority>
   </url>
 
+  <!-- Legal Pages -->
+  <url>
+    <loc>{{ url('/terms') }}</loc>
+    <lastmod>{{ now()->toAtomString() }}</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>{{ url('/privacy') }}</loc>
+    <lastmod>{{ now()->toAtomString() }}</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>{{ url('/shipping') }}</loc>
+    <lastmod>{{ now()->toAtomString() }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
   <!-- Products -->
   @foreach($products as $product)
   <url>
