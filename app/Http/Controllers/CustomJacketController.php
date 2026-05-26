@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\CustomJacketRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use App\Mail\CustomJacketQuoteRequested;
-use App\Mail\CustomJacketConfirmation;
+use App\Mail\CustomJacketInquiry;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -31,8 +32,8 @@ class CustomJacketController extends Controller
       'email' => 'required|email|max:255',
       'phone' => 'required|string|max:20',
       'base_style' => 'required|string|in:Classic Varsity Cut,Oversized Fit,Fitted Silhouette,Cropped Length',
-      'primary_color' => 'required|string|in:Black,Navy Blue,Forest Green,Burgundy,Cream,Charcoal Gray',
-      'secondary_color' => 'required|string|in:Black,Navy Blue,Forest Green,Burgundy,Cream,Charcoal Gray',
+      'primary_color' => 'required|string|in:Black,Navy Blue,Slate Blue,Burgundy,Cream,Charcoal Gray',
+      'secondary_color' => 'required|string|in:Black,Navy Blue,Slate Blue,Burgundy,Cream,Charcoal Gray',
       'material' => 'required|string|in:Wool (100%),Wool Blend (80/20),Linen Blend,Leather Sleeves',
       'sizes' => 'nullable|array',
       'sizes.*' => 'in:sm,md,lg,xl,xxl',
@@ -58,12 +59,12 @@ class CustomJacketController extends Controller
     $customJacket = CustomJacketRequest::create($validated);
 
     try {
-      Mail::to($validated['email'])->send(new CustomJacketConfirmation($customJacket));
+      Mail::to($validated['email'])->send(new CustomJacketInquiry($customJacket));
 
-      $adminEmail = config('mail.from.address');
-      Mail::to($adminEmail)->send(new CustomJacketQuoteRequested($customJacket));
+      $adminEmail = config('mail.from.address', 'admin@toxawayknitting.com');
+      Mail::to($adminEmail)->send(new CustomJacketInquiry($customJacket));
     } catch (\Exception $e) {
-      Log::error('Failed to send custom jacket emails: ' . $e->getMessage());
+      Log::warning('Failed to send custom jacket emails: ' . $e->getMessage());
     }
 
     return redirect()->route('custom-jacket.builder')

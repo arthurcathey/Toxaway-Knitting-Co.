@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Mail\OrderConfirmation;
 use App\Services\CartService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -105,6 +107,13 @@ class OrderController extends Controller
 
     // Clear cart
     $this->cartService->clearCart();
+
+    // Send order confirmation email
+    try {
+      Mail::to($order->customer_email)->send(new OrderConfirmation($order, $order->customer_email));
+    } catch (\Exception $e) {
+      \Log::warning('Failed to send order confirmation email: ' . $e->getMessage());
+    }
 
     return redirect()->route('order.confirmation', $order)->with('success', 'Order placed successfully!');
   }

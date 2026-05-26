@@ -23,7 +23,7 @@
     <div class="container-fluid py-3 sm:py-4 flex justify-between items-center">
       <a href="/" class="font-bold text-sm sm:text-base tracking-widest text-stone-900 hover:text-stone-700 transition">Toxaway Knitting Co.</a>
       <ul class="hidden md:flex gap-4 lg:gap-6 list-none items-center">
-        <li><a href="/shop" class="text-xs tracking-widest hover:text-stone-700 transition {{ request()->routeIs('shop.*') ? 'font-bold text-stone-900' : '' }}">SHOP</a></li>
+        <li><a href="/shop" class="text-xs tracking-widest hover:text-stone-700 transition {{ request()->routeIs('shop', 'product.show') ? 'font-bold text-stone-900' : '' }}">SHOP</a></li>
         <li><a href="/heritage" class="text-xs tracking-widest hover:text-stone-700 transition {{ request()->routeIs('heritage') ? 'font-bold text-stone-900' : '' }}">HERITAGE</a></li>
         <li><a href="/craftsmanship" class="text-xs tracking-widest hover:text-stone-700 transition {{ request()->routeIs('craftsmanship') ? 'font-bold text-stone-900' : '' }}">CRAFT</a></li>
         <li><a href="/contact" class="text-xs tracking-widest hover:text-stone-700 transition {{ request()->routeIs('contact') ? 'font-bold text-stone-900' : '' }}">CONTACT</a></li>
@@ -63,7 +63,7 @@
     </div>
     <div id="mobile-menu" class="hidden md:hidden border-t border-stone-300">
       <ul class="flex flex-col list-none divide-y divide-stone-300">
-        <li><a href="/shop" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition {{ request()->routeIs('shop.*') ? 'font-bold text-stone-900' : '' }}">SHOP</a></li>
+        <li><a href="/shop" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition {{ request()->routeIs('shop', 'product.show') ? 'font-bold text-stone-900' : '' }}">SHOP</a></li>
         <li><a href="/heritage" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition {{ request()->routeIs('heritage') ? 'font-bold text-stone-900' : '' }}">HERITAGE</a></li>
         <li><a href="/craftsmanship" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition {{ request()->routeIs('craftsmanship') ? 'font-bold text-stone-900' : '' }}">CRAFT</a></li>
         <li><a href="/contact" class="block px-4 sm:px-6 py-3 text-xs tracking-widest hover:bg-stone-100 transition {{ request()->routeIs('contact') ? 'font-bold text-stone-900' : '' }}">CONTACT</a></li>

@@ -77,8 +77,20 @@ Route::post('/contact', function (\Illuminate\Http\Request $request) {
     'message' => 'required|string|min:10',
   ]);
 
-  // TODO: Send email notification
-  // TODO: Save to database (create ContactRequest model)
+  // Send notification email to admin
+  try {
+    \Mail::to(config('mail.from.address', 'admin@toxawayknitting.com'))->send(
+      new \App\Mail\ContactNotification(
+        $validated['name'],
+        $validated['email'],
+        $validated['phone'] ?? '',
+        $validated['subject'],
+        $validated['message']
+      )
+    );
+  } catch (\Exception $e) {
+    \Log::warning('Failed to send contact notification email: ' . $e->getMessage());
+  }
 
   return redirect('/contact')->with('success', 'Thank you for your message! We\'ll get back to you soon.');
 })->name('contact.store');
