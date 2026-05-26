@@ -72,10 +72,14 @@ Route::get('/order/{order}', [OrderController::class, 'confirmation'])->name('or
 
 // Payment Routes (Stripe Integration)
 Route::get('/checkout/payment', [PaymentController::class, 'index'])->name('checkout.payment');
-Route::post('/checkout/payment', [PaymentController::class, 'process'])->name('payment.process');
+Route::post('/checkout/payment', [PaymentController::class, 'process'])
+  ->name('payment.process')
+  ->middleware('throttle:3,5');  // 3 payment attempts per 5 minutes per IP
 Route::get('/checkout/success', [PaymentController::class, 'success'])->name('checkout.success');
 Route::get('/checkout/failure', [PaymentController::class, 'failure'])->name('checkout.failure');
-Route::post('/webhook/stripe', [PaymentController::class, 'webhook'])->name('webhook.stripe');
+Route::post('/webhook/stripe', [PaymentController::class, 'webhook'])
+  ->name('webhook.stripe')
+  ->withoutMiddleware('\App\Http\Middleware\VerifyCsrfToken');  // Stripe webhooks don't have CSRF tokens
 
 Route::get('/heritage', function () {
   view()->share(
@@ -141,7 +145,7 @@ Route::post('/contact', function (\Illuminate\Http\Request $request) {
   }
 
   return redirect('/contact')->with('success', 'Thank you for your message! We\'ll get back to you soon.');
-})->name('contact.store');
+})->name('contact.store')->middleware('throttle:3,60');  // 3 contact submissions per hour per IP
 
 // Legal Pages
 Route::get('/terms', function () {
@@ -185,7 +189,9 @@ Route::get('/shipping', function () {
 
 // Custom Jacket Routes
 Route::get('/custom-jacket', [CustomJacketController::class, 'show'])->name('custom-jacket.builder');
-Route::post('/custom-jacket', [CustomJacketController::class, 'store'])->name('custom-jacket.store');
+Route::post('/custom-jacket', [CustomJacketController::class, 'store'])
+  ->name('custom-jacket.store')
+  ->middleware('throttle:3,60');  // 3 custom jacket requests per hour per IP
 
 // SEO Routes
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');

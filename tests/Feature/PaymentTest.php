@@ -4,21 +4,34 @@ namespace Tests\Feature;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Services\CartService;
 use App\Services\StripePaymentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Session;
 use Tests\TestCase;
 
 class PaymentTest extends TestCase
 {
   use RefreshDatabase;
 
-  protected StripePaymentService $stripe;
+  /**
+   * Indicate whether the default seeding should be run before each test.
+   */
+  protected $seed = false;
 
-  public function setUp(): void
+  /**
+   * Helper: Set up cart session with test item
+   */
+  protected function setUpCartSession($productId = 1, $quantity = 1, $size = 'md')
   {
-    parent::setUp();
-    $this->stripe = app(StripePaymentService::class);
+    Session::put('cart', [
+      [
+        'product_id' => $productId,
+        'quantity' => $quantity,
+        'size' => $size,
+      ]
+    ]);
   }
 
   /**
@@ -40,7 +53,8 @@ class PaymentTest extends TestCase
    */
   public function test_stripe_service_instantiated()
   {
-    $this->assertInstanceOf(StripePaymentService::class, $this->stripe);
+    $stripe = app(StripePaymentService::class);
+    $this->assertInstanceOf(StripePaymentService::class, $stripe);
   }
 
   /**
@@ -48,7 +62,8 @@ class PaymentTest extends TestCase
    */
   public function test_get_stripe_public_key()
   {
-    $publicKey = $this->stripe->getPublicKey();
+    $stripe = app(StripePaymentService::class);
+    $publicKey = $stripe->getPublicKey();
     $this->assertNotNull($publicKey);
     $this->assertStringStartsWith('pk_test_', $publicKey);
   }
@@ -67,16 +82,7 @@ class PaymentTest extends TestCase
    */
   public function test_payment_page_displays_with_cart_items()
   {
-    // Add product to session cart
-    session(['cart' => [
-      [
-        'product_id' => 1,
-        'quantity' => 1,
-        'size' => 'md'
-      ]
-    ]]);
-
-    // Create a product if needed
+    // Create a product
     $product = Product::firstOrCreate(
       ['id' => 1],
       [
@@ -86,6 +92,9 @@ class PaymentTest extends TestCase
         'price' => 100,
       ]
     );
+
+    // Set up cart with test item
+    $this->setUpCartSession(1, 1, 'md');
 
     $response = $this->get(route('checkout.payment'));
     $response->assertOk();
@@ -99,18 +108,15 @@ class PaymentTest extends TestCase
    */
   public function test_payment_validation_requires_fields()
   {
-    session(['cart' => [
-      [
-        'product_id' => 1,
-        'quantity' => 1,
-        'size' => 'md'
-      ]
-    ]]);
+    // Set up cart
+    $this->setUpCartSession();
 
-    $response = $this->post(route('payment.process'), [
-      // Missing all required fields
-    ]);
+    $response = $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class)
+      ->post(route('payment.process'), [
+        // Missing all required fields
+      ]);
 
+    // Should return validation error (422)
     $response->assertStatus(422);
     $response->assertJsonValidationErrors([
       'full_name',
@@ -126,18 +132,10 @@ class PaymentTest extends TestCase
   }
 
   /**
-   * Test order is created on successful payment
+   * Test order is created on valid form submission
    */
   public function test_order_created_with_valid_data()
   {
-    session(['cart' => [
-      [
-        'product_id' => 1,
-        'quantity' => 1,
-        'size' => 'md'
-      ]
-    ]]);
-
     // Create product
     Product::firstOrCreate(
       ['id' => 1],
@@ -149,6 +147,9 @@ class PaymentTest extends TestCase
       ]
     );
 
+    // Set up cart
+    $this->setUpCartSession();
+
     // Valid test payment data
     $data = [
       'full_name' => 'John Doe',
@@ -159,19 +160,16 @@ class PaymentTest extends TestCase
       'state' => 'NC',
       'zip' => '28801',
       'country' => 'United States',
-      'payment_method_id' => 'pm_card_visa', // Stripe test token
+      'payment_method_id' => 'pm_card_visa',
     ];
 
-    // Note: This would fail with real Stripe call - for actual testing use browser
-    // This test validates form structure and validation rules
-    $response = $this->post(route('payment.process'), $data);
+    // Note: This would fail with real Stripe call in test environment
+    // This test validates form structure and validation rules only
+    $response = $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class)
+      ->post(route('payment.process'), $data);
 
-    // If payment succeeds, order should be created
-    // If payment fails (no real Stripe connection), should return error response
-    $this->assertTrue(
-      $response->status() === 200 ||
-        $response->status() === 422 ||
-        $response->status() === 500
-    );
+    // Response could be: 200 (success), 422 (validation), 500 (Stripe error)
+    // In test mode without real Stripe, we expect validation or error responses
+    $this->assertIn($response->status(), [200, 422, 500]);
   }
 }

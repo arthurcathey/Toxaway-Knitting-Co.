@@ -16,12 +16,11 @@ return Application::configure(basePath: dirname(__DIR__))
       'is_admin' => \App\Http\Middleware\IsAdmin::class,
     ]);
 
+    // Add security headers middleware for all routes
+    $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
+
     // Add SEO middleware for all routes
     $middleware->append(\App\Http\Middleware\InitializeSeo::class);
-
-    // Ensure CSRF protection is enabled by default on web routes
-    // Laravel 11 includes this automatically, so we just add security headers
-    $middleware->append(\App\Http\Middleware\AddSecurityHeaders::class);
   })
   ->withExceptions(function (Exceptions $exceptions): void {
     //
