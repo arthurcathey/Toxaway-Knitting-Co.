@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ProductAdminController;
 use App\Http\Controllers\CustomJacketController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +69,13 @@ Route::post('/cart/update', [CartController::class, 'update'])->name('cart.updat
 Route::get('/checkout', [OrderController::class, 'checkout'])->name('order.checkout');
 Route::post('/checkout', [OrderController::class, 'store'])->name('order.store');
 Route::get('/order/{order}', [OrderController::class, 'confirmation'])->name('order.confirmation');
+
+// Payment Routes (Stripe Integration)
+Route::get('/checkout/payment', [PaymentController::class, 'index'])->name('checkout.payment');
+Route::post('/checkout/payment', [PaymentController::class, 'process'])->name('payment.process');
+Route::get('/checkout/success', [PaymentController::class, 'success'])->name('checkout.success');
+Route::get('/checkout/failure', [PaymentController::class, 'failure'])->name('checkout.failure');
+Route::post('/webhook/stripe', [PaymentController::class, 'webhook'])->name('webhook.stripe');
 
 Route::get('/heritage', function () {
   view()->share(
