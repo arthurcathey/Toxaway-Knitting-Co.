@@ -8,6 +8,7 @@ use App\Mail\OrderConfirmation;
 use App\Services\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -112,7 +113,7 @@ class OrderController extends Controller
     try {
       Mail::to($order->customer_email)->send(new OrderConfirmation($order, $order->customer_email));
     } catch (\Exception $e) {
-      \Log::warning('Failed to send order confirmation email: ' . $e->getMessage());
+      Log::warning('Failed to send order confirmation email: ' . $e->getMessage());
     }
 
     return redirect()->route('order.confirmation', $order)->with('success', 'Order placed successfully!');

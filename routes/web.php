@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
@@ -117,7 +119,7 @@ Route::post('/contact', function (\Illuminate\Http\Request $request) {
 
   // Send notification email to admin
   try {
-    \Mail::to(config('mail.from.address', 'admin@toxawayknitting.com'))->send(
+    Mail::to(config('mail.from.address', 'admin@toxawayknitting.com'))->send(
       new \App\Mail\ContactNotification(
         $validated['name'],
         $validated['email'],
@@ -127,7 +129,7 @@ Route::post('/contact', function (\Illuminate\Http\Request $request) {
       )
     );
   } catch (\Exception $e) {
-    \Log::warning('Failed to send contact notification email: ' . $e->getMessage());
+    Log::warning('Failed to send contact notification email: ' . $e->getMessage());
   }
 
   return redirect('/contact')->with('success', 'Thank you for your message! We\'ll get back to you soon.');
