@@ -211,7 +211,7 @@
             <div>
               <label for="status" class="block text-xs font-bold uppercase tracking-wider text-stone-600 mb-2">Status</label>
               <select id="status" name="status" required
-                class="w-full px-3 py-2 border border-stone-300 text-xs focus:outline-none focus:border-stone-900">
+                class="w-full px-3 py-2 border border-stone-300 text-xs focus:outline-none focus:ring-2 focus:ring-stone-900 focus:ring-offset-2">
                 <option value="pending" @selected($request->status === 'pending')>Pending Review</option>
                 <option value="quoted" @selected($request->status === 'quoted')>Quote Sent</option>
                 <option value="approved" @selected($request->status === 'approved')>Approved</option>
@@ -228,7 +228,7 @@
                 <span class="text-lg font-semibold text-stone-600">$</span>
                 <input type="number" id="quoted_price" name="quoted_price" step="0.01" min="0"
                   value="{{ $request->quoted_price }}" placeholder="0.00"
-                  class="flex-1 px-3 py-2 border border-stone-300 text-xs focus:outline-none focus:border-stone-900 ml-1">
+                  class="flex-1 px-3 py-2 border border-stone-300 text-xs focus:outline-none focus:ring-2 focus:ring-stone-900 focus:ring-offset-2 ml-1">
               </div>
             </div>
 
@@ -236,7 +236,7 @@
             <div>
               <label for="admin_notes" class="block text-xs font-bold uppercase tracking-wider text-stone-600 mb-2">Admin Notes</label>
               <textarea id="admin_notes" name="admin_notes" rows="4" placeholder="Add internal notes about this order..."
-                class="w-full px-3 py-2 border border-stone-300 text-xs focus:outline-none focus:border-stone-900">{{ $request->admin_notes }}</textarea>
+                class="w-full px-3 py-2 border border-stone-300 text-xs focus:outline-none focus:ring-2 focus:ring-stone-900 focus:ring-offset-2">{{ $request->admin_notes }}</textarea>
             </div>
 
             <!-- Submit -->

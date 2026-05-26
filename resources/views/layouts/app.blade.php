@@ -26,6 +26,9 @@
 </head>
 
 <body>
+  <!-- Skip to Main Content Link -->
+  <a href="#main-content" class="skip-to-main">Skip to main content</a>
+
   <nav class="fixed top-0 left-0 right-0 bg-stone-50 border-b border-stone-300 z-50">
     <div class="container-fluid py-3 sm:py-4 flex justify-between items-center">
       <a href="/" class="font-bold text-sm sm:text-base tracking-widest text-stone-900 hover:text-stone-700 transition">Toxaway Knitting Co.</a>
@@ -62,8 +65,8 @@
         </li>
         @endauth
       </ul>
-      <button id="mobile-menu-btn" class="md:hidden text-stone-900 hover:text-stone-700 transition">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <button id="mobile-menu-btn" class="md:hidden text-stone-900 hover:text-stone-700 transition" aria-label="Toggle mobile menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
@@ -94,9 +97,11 @@
     </div>
   </nav>
 
-  @yield('content')
+  <main id="main-content">
+    @yield('content')
+  </main>
 
-  <footer class="border-t border-stone-300 section-py mt-12 sm:mt-16 md:mt-20">
+  <footer class="border-t border-stone-300 section-py mt-12 sm:mt-16 md:mt-20" role="contentinfo">
     <div class="container-fluid">
       <div class="grid-3col gap-6 sm:gap-8 mb-6 sm:mb-8">
         <div>
@@ -124,7 +129,7 @@
     </div>
   </footer>
 
-  <button id="scroll-to-top-btn" class="hidden fixed bottom-8 right-8 bg-stone-600 text-stone-50 p-3 rounded-full hover:bg-stone-700 transition shadow-lg z-50" title="Scroll to top">
+  <button id="scroll-to-top-btn" class="hidden fixed bottom-8 right-8 bg-stone-600 text-stone-50 p-3 rounded-full hover:bg-stone-700 transition shadow-lg z-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-stone-900" title="Scroll to top" aria-label="Scroll to top">
     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
       <path fill-rule="evenodd" d="M3.293 14.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L10 9.414l-5.293 5.293a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
     </svg>

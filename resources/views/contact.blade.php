@@ -65,25 +65,25 @@
           <!-- Name -->
           <div>
             <label for="name" class="block text-xs font-bold tracking-widest uppercase text-stone-600 mb-2">Name</label>
-            <input type="text" id="name" name="name" required class="w-full px-4 py-2 border border-stone-300 text-xs focus:outline-none focus:border-stone-900" placeholder="Your name">
+            <input type="text" id="name" name="name" required class="w-full px-4 py-2 border border-stone-300 text-xs focus:outline-none focus:ring-2 focus:ring-stone-900 focus:ring-offset-2" placeholder="Your name">
           </div>
 
           <!-- Email -->
           <div>
             <label for="email" class="block text-xs font-bold tracking-widest uppercase text-stone-600 mb-2">Email</label>
-            <input type="email" id="email" name="email" required class="w-full px-4 py-2 border border-stone-300 text-xs focus:outline-none focus:border-stone-900" placeholder="your@email.com">
+            <input type="email" id="email" name="email" required class="w-full px-4 py-2 border border-stone-300 text-xs focus:outline-none focus:ring-2 focus:ring-stone-900 focus:ring-offset-2" placeholder="your@email.com">
           </div>
 
           <!-- Phone -->
           <div>
             <label for="phone" class="block text-xs font-bold tracking-widest uppercase text-stone-600 mb-2">Phone (Optional)</label>
-            <input type="tel" id="phone" name="phone" class="w-full px-4 py-2 border border-stone-300 text-xs focus:outline-none focus:border-stone-900" placeholder="(555) 123-4567">
+            <input type="tel" id="phone" name="phone" class="w-full px-4 py-2 border border-stone-300 text-xs focus:outline-none focus:ring-2 focus:ring-stone-900 focus:ring-offset-2" placeholder="(555) 123-4567">
           </div>
 
           <!-- Subject -->
           <div>
             <label for="subject" class="block text-xs font-bold tracking-widest uppercase text-stone-600 mb-2">Subject</label>
-            <select id="subject" name="subject" required class="w-full px-4 py-2 border border-stone-300 text-xs focus:outline-none focus:border-stone-900">
+            <select id="subject" name="subject" required class="w-full px-4 py-2 border border-stone-300 text-xs focus:outline-none focus:ring-2 focus:ring-stone-900 focus:ring-offset-2">
               <option value="">Select a subject...</option>
               <option value="order">Order Question</option>
               <option value="custom">Custom Jacket Inquiry</option>
@@ -97,7 +97,7 @@
           <!-- Message -->
           <div>
             <label for="message" class="block text-xs font-bold tracking-widest uppercase text-stone-600 mb-2">Message</label>
-            <textarea id="message" name="message" rows="6" required class="w-full px-4 py-2 border border-stone-300 text-xs focus:outline-none focus:border-stone-900" placeholder="Your message..."></textarea>
+            <textarea id="message" name="message" rows="6" required class="w-full px-4 py-2 border border-stone-300 text-xs focus:outline-none focus:ring-2 focus:ring-stone-900 focus:ring-offset-2" placeholder="Your message..."></textarea>
           </div>
 
           <!-- Submit -->

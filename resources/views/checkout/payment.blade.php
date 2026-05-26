@@ -46,7 +46,7 @@
               <div>
                 <label for="full_name" class="block text-sm font-medium text-stone-700 mb-1">Full Name *</label>
                 <input type="text" id="full_name" name="full_name" required
-                  class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-900"
                   placeholder="John Doe">
               </div>
 
@@ -54,13 +54,13 @@
                 <div>
                   <label for="email" class="block text-sm font-medium text-stone-700 mb-1">Email *</label>
                   <input type="email" id="email" name="email" required
-                    class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-900"
                     placeholder="john@example.com">
                 </div>
                 <div>
                   <label for="phone" class="block text-sm font-medium text-stone-700 mb-1">Phone *</label>
                   <input type="tel" id="phone" name="phone" required
-                    class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-900"
                     placeholder="(555) 123-4567">
                 </div>
               </div>
@@ -68,7 +68,7 @@
               <div>
                 <label for="address" class="block text-sm font-medium text-stone-700 mb-1">Address *</label>
                 <input type="text" id="address" name="address" required
-                  class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-900"
                   placeholder="123 Main Street">
               </div>
 
@@ -76,13 +76,13 @@
                 <div>
                   <label for="city" class="block text-sm font-medium text-stone-700 mb-1">City *</label>
                   <input type="text" id="city" name="city" required
-                    class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-900"
                     placeholder="Asheville">
                 </div>
                 <div>
                   <label for="state" class="block text-sm font-medium text-stone-700 mb-1">State *</label>
                   <input type="text" id="state" name="state" required
-                    class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-900"
                     placeholder="NC">
                 </div>
               </div>
@@ -91,13 +91,13 @@
                 <div>
                   <label for="zip" class="block text-sm font-medium text-stone-700 mb-1">ZIP Code *</label>
                   <input type="text" id="zip" name="zip" required
-                    class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-900"
                     placeholder="28801">
                 </div>
                 <div>
                   <label for="country" class="block text-sm font-medium text-stone-700 mb-1">Country *</label>
                   <input type="text" id="country" name="country" value="United States" required
-                    class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-900">
                 </div>
               </div>
             </fieldset>

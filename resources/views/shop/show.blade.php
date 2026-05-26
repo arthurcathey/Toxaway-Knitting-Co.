@@ -69,7 +69,7 @@
             <label for="size-{{ $product->id }}" class="block text-xs sm:text-sm text-stone-600 mb-2">SIZE</label>
             <select
               id="size-{{ $product->id }}"
-              class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-stone-300 rounded text-stone-900 text-xs sm:text-sm focus:outline-none focus:border-stone-900">
+              class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-stone-300 rounded text-stone-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-stone-900 focus:ring-offset-2">
               <option value="">Select a size</option>
               @foreach($product->sizes as $size)
               <option value="{{ $size }}">
@@ -94,7 +94,7 @@
               min="1"
               max="99"
               value="1"
-              class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-stone-300 rounded text-stone-900 text-xs sm:text-sm focus:outline-none focus:border-stone-900">
+              class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-stone-300 rounded text-stone-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-stone-900 focus:ring-offset-2">
           </div>
           <button
             type="button"

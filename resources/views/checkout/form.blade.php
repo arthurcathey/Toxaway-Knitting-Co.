@@ -28,7 +28,7 @@
               id="customer_name"
               name="customer_name"
               required
-              class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-stone-300 rounded text-stone-900 text-xs sm:text-sm focus:outline-none focus:border-stone-900 {{ $errors->has('customer_name') ? 'border-red-500' : '' }}"
+              class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-stone-300 rounded text-stone-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 {{ $errors->has('customer_name') ? 'border-red-500' : '' }}"
               value="{{ old('customer_name') }}">
             @if($errors->has('customer_name'))
             <p class="text-red-600 text-xs mt-1">{{ $errors->first('customer_name') }}</p>
