@@ -74,14 +74,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (isValid && field.value.trim()) {
             field.classList.remove('border-red-500', 'bg-red-50');
-            field.classList.add('border-green-500', 'bg-green-50');
-            feedbackEl.innerHTML = '<span class="text-green-600">✓ Valid</span>';
+            field.classList.add('border-blue-500', 'bg-blue-50');
+            feedbackEl.innerHTML = '<span class="text-blue-600">✓ Valid</span>';
         } else if (!isValid) {
-            field.classList.remove('border-green-500', 'bg-green-50');
+            field.classList.remove('border-blue-500', 'bg-blue-50');
             field.classList.add('border-red-500', 'bg-red-50');
             feedbackEl.innerHTML = `<span class="text-red-600">✗ ${errorMsg}</span>`;
         } else {
-            field.classList.remove('border-red-500', 'bg-red-50', 'border-green-500', 'bg-green-50');
+            field.classList.remove('border-red-500', 'bg-red-50', 'border-blue-500', 'bg-blue-50');
             feedbackEl.innerHTML = '';
         }
     };
@@ -179,8 +179,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         statusEl.className = `p-4 rounded-lg mb-4 text-sm ${
             isSuccess
-                ? 'bg-green-50 border border-green-300 text-green-700'
-                : 'bg-blue-50 border border-blue-300 text-blue-700'
+                ? 'bg-blue-50 border border-blue-300 text-blue-700'
+                : 'bg-red-50 border border-red-300 text-red-700'
         }`;
         statusEl.textContent = message;
     };
