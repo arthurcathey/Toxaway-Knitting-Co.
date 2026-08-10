@@ -23,12 +23,39 @@
             <div class="flex justify-between items-start mb-3 sm:mb-4">
               <div>
                 <h3 class="text-stone-900 text-xs sm:text-sm font-bold mb-1">{{ $item['product_name'] }}</h3>
-                <p class="text-stone-600 text-xs">Size: {{ $item['size'] }}</p>
+                @if($item['color'])
+                <p class="text-stone-600 text-xs">Color: {{ match($item['color']) {
+                  'black' => 'Black',
+                  'navy' => 'Navy Blue',
+                  'forest_green' => 'Forest Green',
+                  'burgundy' => 'Burgundy',
+                  'cream' => 'Cream',
+                  'charcoal' => 'Charcoal Gray',
+                  'white' => 'White',
+                  'olive' => 'Olive Green',
+                  'slate' => 'Slate Blue',
+                  'brown' => 'Brown',
+                  'tan' => 'Tan',
+                  'gray' => 'Light Gray',
+                  default => $item['color']
+                } }}</p>
+                @endif
+                @if($item['size'])
+                <p class="text-stone-600 text-xs">Size: {{ match($item['size']) {
+                  'sm' => 'Small',
+                  'md' => 'Medium',
+                  'lg' => 'Large',
+                  'xl' => 'Extra Large',
+                  'xxl' => 'Extra Extra Large',
+                  default => $item['size']
+                } }}</p>
+                @endif
               </div>
               <button
                 type="button"
                 data-product-id="{{ $item['product_id'] }}"
                 data-size="{{ $item['size'] }}"
+                data-color="{{ $item['color'] }}"
                 class="remove-cart-btn text-stone-600 hover:text-stone-900 transition text-xs">
                 ✕
               </button>
@@ -47,6 +74,7 @@
                     max="99"
                     data-product-id="{{ $item['product_id'] }}"
                     data-size="{{ $item['size'] }}"
+                    data-color="{{ $item['color'] }}"
                     class="quantity-input w-12 px-2 py-1 border border-stone-300 rounded text-xs text-stone-900 focus:outline-none focus:border-stone-900">
                 </div>
               </div>

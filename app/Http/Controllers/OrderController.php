@@ -33,7 +33,8 @@ class OrderController extends Controller
     foreach ($cart as $item) {
       $items[] = [
         'product_name' => $item['product_name'],
-        'size' => $item['size'],
+        'size' => $item['size'] ?? null,
+        'color' => $item['color'] ?? null,
         'price' => $item['price'],
         'quantity' => $item['quantity'],
         'subtotal' => $item['price'] * $item['quantity'],
@@ -103,6 +104,8 @@ class OrderController extends Controller
         'price' => $item['price'],
         'quantity' => $item['quantity'],
         'subtotal' => $item['price'] * $item['quantity'],
+        'size' => $item['size'] ?? null,
+        'color' => $item['color'] ?? null,
       ]);
     }
 

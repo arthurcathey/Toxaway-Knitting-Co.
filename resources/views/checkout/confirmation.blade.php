@@ -47,7 +47,36 @@
           <div class="flex justify-between items-center py-3 border-b border-stone-200 last:border-0">
             <div>
               <p class="text-sm font-semibold text-stone-900">{{ $item->product_name }}</p>
-              <p class="text-xs text-stone-600">Quantity: {{ $item->quantity }}</p>
+              <p class="text-xs text-stone-600">
+                @if($item->color)
+                Color: {{ match($item->color) {
+                  'black' => 'Black',
+                  'navy' => 'Navy Blue',
+                  'forest_green' => 'Forest Green',
+                  'burgundy' => 'Burgundy',
+                  'cream' => 'Cream',
+                  'charcoal' => 'Charcoal Gray',
+                  'white' => 'White',
+                  'olive' => 'Olive Green',
+                  'slate' => 'Slate Blue',
+                  'brown' => 'Brown',
+                  'tan' => 'Tan',
+                  'gray' => 'Light Gray',
+                  default => $item->color
+                } }},
+                @endif
+                @if($item->size)
+                Size: {{ match($item->size) {
+                  'sm' => 'Small',
+                  'md' => 'Medium',
+                  'lg' => 'Large',
+                  'xl' => 'Extra Large',
+                  'xxl' => 'Extra Extra Large',
+                  default => $item->size
+                } }},
+                @endif
+                Quantity: {{ $item->quantity }}
+              </p>
             </div>
             <p class="font-bold text-stone-900">${{ number_format($item->subtotal, 2) }}</p>
           </div>

@@ -8,9 +8,14 @@
   <link rel="canonical" href="{{ url()->current() }}">
   <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
 
+  <!-- Preconnect to external origins for faster DNS resolution -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   {!! $seo->getMetaTags() ?? '' !!}
 
-  @vite(['resources/css/app.css', 'resources/js/config.js', 'resources/js/scroll.js', 'resources/js/app.js', 'resources/js/cart.js'])
+  <!-- Critical CSS (inline) and async defer for non-critical -->
+  @vite(['resources/css/app.css', 'resources/js/config.js', 'resources/js/scroll.js', 'resources/js/cart.js', 'resources/js/app.js'])
 
   {!! $seo->getStructuredData() ?? '' !!}
 

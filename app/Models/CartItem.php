@@ -13,6 +13,7 @@ class CartItem extends Model
     'price',
     'quantity',
     'size',
+    'color',
   ];
 
   protected $casts = [

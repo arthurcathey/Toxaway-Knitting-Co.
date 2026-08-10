@@ -49,35 +49,21 @@ function updateCartCount(count) {
 
 // Initialize cart count from server on page load
 document.addEventListener('DOMContentLoaded', () => {
-  // Always fetch the actual cart count from the server to ensure accuracy
-  // Add timestamp to prevent caching
-  const timestamp = new Date().getTime();
-  fetch(`/cart/count?t=${timestamp}`)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      const cartCount = parseInt(data.cartCount) || 0;
-      // Update both localStorage and the display
-      localStorage.setItem('cartCount', cartCount);
-      updateCartCount(cartCount);
-    })
-    .catch(error => {
-      // Fallback to localStorage if fetch fails
-      console.warn('Failed to fetch cart count from server:', error);
-      const cartCount = parseInt(localStorage.getItem('cartCount')) || 0;
-      if (cartCount > 0) {
-        updateCartCount(cartCount);
-      } else {
-        // Clear cart if no items
-        updateCartCount(0);
-      }
+  // Use requestIdleCallback to defer non-critical cart initialization
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(() => {
+      initializeCartCount();
+      setupCartHandlers();
     });
+  } else {
+    // Fallback for browsers that don't support requestIdleCallback
+    setTimeout(() => {
+      initializeCartCount();
+      setupCartHandlers();
+    }, 0);
+  }
 
-  // Handle size selection - disable add to cart button until size is chosen
+  // Handle size selection - disable add to cart button until size is chosen (critical for UX)
   document.querySelectorAll('[data-add-to-cart]').forEach(button => {
     const productId = button.getAttribute('data-add-to-cart');
     const sizeSelect = document.getElementById(`size-${productId}`);
@@ -100,26 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Handle quantity input changes on cart page
-  document.querySelectorAll('.quantity-input').forEach(input => {
-    input.addEventListener('change', () => {
-      const productId = input.getAttribute('data-product-id');
-      const size = input.getAttribute('data-size');
-      const quantity = input.value;
-      
-      if (productId && size) {
-        updateQuantity(productId, size, quantity);
-      }
-    });
-  });
-});
-
-function requestConsultation() {
-  window.location.href = '/contact?type=custom-consultation';
-}
-
-// Delete confirmation handler
-document.addEventListener('DOMContentLoaded', () => {
+  // Delete confirmation handler
   document.querySelectorAll('[data-confirm-delete]').forEach(form => {
     form.addEventListener('submit', (e) => {
       const message = form.getAttribute('data-confirm-delete');
@@ -129,3 +96,68 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+function initializeCartCount() {
+  const timestamp = new Date().getTime();
+  fetch(`/cart/count?t=${timestamp}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      const cartCount = parseInt(data.cartCount) || 0;
+      localStorage.setItem('cartCount', cartCount);
+      updateCartCount(cartCount);
+    })
+    .catch(error => {
+      const cartCount = parseInt(localStorage.getItem('cartCount')) || 0;
+      if (cartCount > 0) {
+        updateCartCount(cartCount);
+      } else {
+        updateCartCount(0);
+      }
+    });
+}
+
+function setupCartHandlers() {
+  // Handle quantity input changes on cart page
+  document.querySelectorAll('.quantity-input').forEach(input => {
+    input.addEventListener('change', () => {
+      const productId = input.getAttribute('data-product-id');
+      const size = input.getAttribute('data-size');
+      const color = input.getAttribute('data-color');
+      const quantity = input.value;
+      
+      if (productId) {
+        updateQuantity(productId, size, color, quantity);
+      }
+    });
+  });
+
+  // Handle remove from cart button
+  document.querySelectorAll('.remove-cart-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const productId = btn.getAttribute('data-product-id');
+      const size = btn.getAttribute('data-size');
+      const color = btn.getAttribute('data-color');
+      
+      if (productId) {
+        removeFromCart(productId, size, color);
+      }
+    });
+  });
+
+  // Add to cart button click handlers
+  document.querySelectorAll('[data-add-to-cart]').forEach(button => {
+    button.addEventListener('click', (e) => {
+      const productId = button.getAttribute('data-add-to-cart');
+      addToCart(productId);
+    });
+  });
+}
+
+function requestConsultation() {
+  window.location.href = '/contact?type=custom-consultation';
+}

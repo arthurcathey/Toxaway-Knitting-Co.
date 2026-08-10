@@ -82,6 +82,41 @@
           @enderror
         </div>
 
+        <!-- Colors Section -->
+        <div class="mb-6">
+          <label class="block text-sm font-semibold text-gray-700 mb-3">Available Colors (Select up to 3)</label>
+          <div class="space-y-2">
+            @php
+            $allColors = [
+            'black' => 'Black',
+            'navy' => 'Navy Blue',
+            'forest_green' => 'Forest Green',
+            'burgundy' => 'Burgundy',
+            'cream' => 'Cream',
+            'charcoal' => 'Charcoal Gray',
+            'white' => 'White',
+            'olive' => 'Olive Green',
+            'slate' => 'Slate Blue',
+            'brown' => 'Brown',
+            'tan' => 'Tan',
+            'gray' => 'Light Gray',
+            ];
+            @endphp
+            @foreach($allColors as $colorCode => $colorLabel)
+            <div class="flex items-center">
+              <input type="checkbox" id="color_{{ $colorCode }}" name="colors[]" value="{{ $colorCode }}"
+                {{ in_array($colorCode, old('colors', [])) ? 'checked' : '' }}
+                class="h-4 w-4 rounded border-gray-300">
+              <label for="color_{{ $colorCode }}" class="ml-2 text-sm text-gray-700">{{ $colorLabel }}</label>
+            </div>
+            @endforeach
+          </div>
+          <p class="mt-2 text-xs text-gray-500">Users will be able to choose from the selected colors</p>
+          @error('colors')
+          <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+          @enderror
+        </div>
+
         <div class="mb-6">
           <label for="image" class="block text-sm font-semibold text-gray-700 mb-2">Product Image</label>
           <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"

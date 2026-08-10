@@ -64,6 +64,36 @@
           <a href="/custom-jacket" class="btn-primary w-full text-center block mb-3 sm:mb-4">DESIGN YOUR OWN</a>
           <button type="button" onclick="requestConsultation()" class="btn-secondary w-full">REQUEST CONSULTATION</button>
           @else
+          <!-- Color Selection -->
+          @if($product->colors && count($product->colors) > 0)
+          <div class="mb-4">
+            <label for="color-{{ $product->id }}" class="block text-xs sm:text-sm text-stone-600 mb-2">COLOR</label>
+            <select
+              id="color-{{ $product->id }}"
+              class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-stone-300 rounded text-stone-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-stone-900 focus:ring-offset-2">
+              <option value="">Select a color</option>
+              @foreach($product->colors as $color)
+              <option value="{{ $color }}">
+                {{ match($color) {
+                  'black' => 'Black',
+                  'navy' => 'Navy Blue',
+                  'forest_green' => 'Forest Green',
+                  'burgundy' => 'Burgundy',
+                  'cream' => 'Cream',
+                  'charcoal' => 'Charcoal Gray',
+                  'white' => 'White',
+                  'olive' => 'Olive Green',
+                  'slate' => 'Slate Blue',
+                  'brown' => 'Brown',
+                  'tan' => 'Tan',
+                  'gray' => 'Light Gray',
+                  default => $color
+                } }}
+              </option>
+              @endforeach
+            </select>
+          </div>
+          @endif
           @if($product->sizes && count($product->sizes) > 0)
           <div class="mb-4">
             <label for="size-{{ $product->id }}" class="block text-xs sm:text-sm text-stone-600 mb-2">SIZE</label>

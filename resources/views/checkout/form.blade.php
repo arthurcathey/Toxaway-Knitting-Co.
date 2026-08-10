@@ -214,7 +214,36 @@
               <div class="flex justify-between items-start text-xs sm:text-sm">
                 <div>
                   <p class="font-semibold text-stone-900">{{ $item['product_name'] }}</p>
-                  <p class="text-stone-600">Size: {{ $item['size'] }}, Qty: {{ $item['quantity'] }}</p>
+                  <p class="text-stone-600">
+                    @if(isset($item['color']))
+                    Color: {{ match($item['color']) {
+                      'black' => 'Black',
+                      'navy' => 'Navy Blue',
+                      'forest_green' => 'Forest Green',
+                      'burgundy' => 'Burgundy',
+                      'cream' => 'Cream',
+                      'charcoal' => 'Charcoal Gray',
+                      'white' => 'White',
+                      'olive' => 'Olive Green',
+                      'slate' => 'Slate Blue',
+                      'brown' => 'Brown',
+                      'tan' => 'Tan',
+                      'gray' => 'Light Gray',
+                      default => $item['color']
+                    } }},
+                    @endif
+                    @if(isset($item['size']))
+                    Size: {{ match($item['size']) {
+                      'sm' => 'Small',
+                      'md' => 'Medium',
+                      'lg' => 'Large',
+                      'xl' => 'Extra Large',
+                      'xxl' => 'Extra Extra Large',
+                      default => $item['size']
+                    } }},
+                    @endif
+                    Qty: {{ $item['quantity'] }}
+                  </p>
                 </div>
                 <p class="font-semibold text-stone-900">${{ number_format($item['subtotal'], 2) }}</p>
               </div>

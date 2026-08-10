@@ -8,4 +8,21 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    build: {
+        target: 'es2020',
+        minify: 'terser',
+        terserOptions: {
+            compress: {
+                drop_console: true,
+            },
+        },
+        sourcemap: false,
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    vendor: [],
+                },
+            },
+        },
+    },
 });

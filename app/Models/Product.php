@@ -16,6 +16,7 @@ class Product extends Model
     'price',
     'category',
     'sizes',
+    'colors',
     'image',
     'in_stock',
   ];
@@ -24,6 +25,7 @@ class Product extends Model
     'price' => 'decimal:2',
     'in_stock' => 'boolean',
     'sizes' => 'array',
+    'colors' => 'array',
   ];
 
   public function getRouteKeyName()

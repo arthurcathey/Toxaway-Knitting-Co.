@@ -5,11 +5,10 @@ function scrollToTopOnLoad() {
   if (window.scrollTo) window.scrollTo(0, 0);
 }
 
-// Execute immediately
-scrollToTopOnLoad();
-
-// Execute on DOMContentLoaded
-document.addEventListener('DOMContentLoaded', scrollToTopOnLoad);
-
-// Execute on load event
-window.addEventListener('load', scrollToTopOnLoad);
+// Defer scroll setup to avoid blocking page render
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', scrollToTopOnLoad);
+} else {
+  // Page already loaded
+  scrollToTopOnLoad();
+}

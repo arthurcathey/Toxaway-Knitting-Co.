@@ -28,13 +28,14 @@ class CartService
     return CartItem::where('user_id', Auth::id())
       ->get()
       ->mapWithKeys(function ($item) {
-        $key = $item->product_id . '-' . $item->size;
+        $key = $item->product_id . '-' . ($item->size ?? '') . '-' . ($item->color ?? '');
         return [$key => [
           'product_id' => $item->product_id,
           'product_name' => $item->product_name,
           'price' => (float) $item->price,
           'quantity' => $item->quantity,
           'size' => $item->size,
+          'color' => $item->color,
         ]];
       })
       ->toArray();
@@ -60,25 +61,39 @@ class CartService
   /**
    * Add item to cart
    */
-  public function addToCart($productId, $quantity, $size, $productName, $price)
+  public function addToCart($productId, $quantity, $size, $color, $productName, $price)
   {
     if (Auth::check()) {
-      $this->addToUserCart($productId, $quantity, $size, $productName, $price);
+      $this->addToUserCart($productId, $quantity, $size, $color, $productName, $price);
     } else {
-      $this->addToSessionCart($productId, $quantity, $size, $productName, $price);
+      $this->addToSessionCart($productId, $quantity, $size, $color, $productName, $price);
     }
   }
 
   /**
    * Add item to user database cart
    */
-  public function addToUserCart($productId, $quantity, $size, $productName, $price)
+  public function addToUserCart($productId, $quantity, $size, $color, $productName, $price)
   {
-    $key = $productId . '-' . $size;
-    $existing = CartItem::where('user_id', Auth::id())
-      ->where('product_id', $productId)
-      ->where('size', $size)
-      ->first();
+    $key = $productId . '-' . ($size ?? '') . '-' . ($color ?? '');
+
+    // Build query to find existing item with proper null handling
+    $query = CartItem::where('user_id', Auth::id())
+      ->where('product_id', $productId);
+
+    if ($size === null) {
+      $query->whereNull('size');
+    } else {
+      $query->where('size', $size);
+    }
+
+    if ($color === null) {
+      $query->whereNull('color');
+    } else {
+      $query->where('color', $color);
+    }
+
+    $existing = $query->first();
 
     if ($existing) {
       $existing->update(['quantity' => $existing->quantity + $quantity]);
@@ -90,6 +105,7 @@ class CartService
         'price' => $price,
         'quantity' => $quantity,
         'size' => $size,
+        'color' => $color,
       ]);
     }
   }
@@ -97,10 +113,10 @@ class CartService
   /**
    * Add item to session cart
    */
-  public function addToSessionCart($productId, $quantity, $size, $productName, $price)
+  public function addToSessionCart($productId, $quantity, $size, $color, $productName, $price)
   {
     $cart = Session::get('cart', []);
-    $key = $productId . '-' . $size;
+    $key = $productId . '-' . ($size ?? '') . '-' . ($color ?? '');
 
     if (isset($cart[$key])) {
       $cart[$key]['quantity'] += $quantity;
@@ -111,6 +127,7 @@ class CartService
         'price' => (float) $price,
         'quantity' => $quantity,
         'size' => $size,
+        'color' => $color,
       ];
     }
 
@@ -120,16 +137,29 @@ class CartService
   /**
    * Remove item from cart
    */
-  public function removeFromCart($productId, $size)
+  public function removeFromCart($productId, $size, $color)
   {
     if (Auth::check()) {
-      CartItem::where('user_id', Auth::id())
-        ->where('product_id', $productId)
-        ->where('size', $size)
-        ->delete();
+      $query = CartItem::where('user_id', Auth::id())
+        ->where('product_id', $productId);
+
+      // Handle null values properly with IS NULL instead of = NULL
+      if ($size === null) {
+        $query->whereNull('size');
+      } else {
+        $query->where('size', $size);
+      }
+
+      if ($color === null) {
+        $query->whereNull('color');
+      } else {
+        $query->where('color', $color);
+      }
+
+      $query->delete();
     } else {
       $cart = Session::get('cart', []);
-      $key = $productId . '-' . $size;
+      $key = $productId . '-' . ($size ?? '') . '-' . ($color ?? '');
       unset($cart[$key]);
       Session::put('cart', $cart);
     }
@@ -138,20 +168,33 @@ class CartService
   /**
    * Update cart item quantity
    */
-  public function updateQuantity($productId, $size, $quantity)
+  public function updateQuantity($productId, $size, $color, $quantity)
   {
     if (Auth::check()) {
       if ($quantity <= 0) {
-        $this->removeFromCart($productId, $size);
+        $this->removeFromCart($productId, $size, $color);
       } else {
-        CartItem::where('user_id', Auth::id())
-          ->where('product_id', $productId)
-          ->where('size', $size)
-          ->update(['quantity' => $quantity]);
+        $query = CartItem::where('user_id', Auth::id())
+          ->where('product_id', $productId);
+
+        // Handle null values properly
+        if ($size === null) {
+          $query->whereNull('size');
+        } else {
+          $query->where('size', $size);
+        }
+
+        if ($color === null) {
+          $query->whereNull('color');
+        } else {
+          $query->where('color', $color);
+        }
+
+        $query->update(['quantity' => $quantity]);
       }
     } else {
       $cart = Session::get('cart', []);
-      $key = $productId . '-' . $size;
+      $key = $productId . '-' . ($size ?? '') . '-' . ($color ?? '');
       if ($quantity <= 0) {
         unset($cart[$key]);
       } else {
@@ -184,7 +227,8 @@ class CartService
       $this->addToUserCart(
         $item['product_id'],
         $item['quantity'],
-        $item['size'],
+        $item['size'] ?? null,
+        $item['color'] ?? null,
         $item['product_name'],
         $item['price']
       );

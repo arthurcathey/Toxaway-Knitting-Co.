@@ -29,6 +29,7 @@ class CartController extends Controller
         'price' => $item['price'],
         'quantity' => $item['quantity'],
         'size' => $item['size'],
+        'color' => $item['color'],
         'subtotal' => $item['price'] * $item['quantity'],
       ];
       $total += $item['price'] * $item['quantity'];
@@ -39,72 +40,117 @@ class CartController extends Controller
 
   public function add(Request $request)
   {
-    $validated = $request->validate([
-      'product_id' => 'required|exists:products,id',
-      'quantity' => 'required|integer|min:1|max:99',
-      'size' => 'required|string',
-    ]);
+    try {
+      $validated = $request->validate([
+        'product_id' => 'required|exists:products,id',
+        'quantity' => 'required|integer|min:1|max:99',
+        'size' => 'nullable|string',
+        'color' => 'nullable|string',
+      ]);
 
-    $product = Product::find($validated['product_id']);
-    if (!$product) {
-      return response()->json(['success' => false, 'message' => 'Product not found'], 404);
+      // Normalize empty strings to null
+      $size = $validated['size'] === '' ? null : $validated['size'];
+      $color = $validated['color'] === '' ? null : $validated['color'];
+
+      $product = Product::find($validated['product_id']);
+      if (!$product) {
+        return response()->json(['success' => false, 'message' => 'Product not found'], 404);
+      }
+
+      $this->cartService->addToCart(
+        $validated['product_id'],
+        $validated['quantity'],
+        $size,
+        $color,
+        $product->name,
+        $product->price
+      );
+
+      $cartCount = $this->cartService->getCartCount();
+
+      return response()->json([
+        'success' => true,
+        'message' => 'Product added to cart',
+        'cartCount' => $cartCount,
+      ]);
+    } catch (\Exception $e) {
+      \Log::error('Cart add error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+      return response()->json([
+        'success' => false,
+        'message' => 'Error adding to cart: ' . $e->getMessage(),
+      ], 500);
     }
-
-    $this->cartService->addToCart(
-      $validated['product_id'],
-      $validated['quantity'],
-      $validated['size'],
-      $product->name,
-      $product->price
-    );
-
-    $cartCount = $this->cartService->getCartCount();
-
-    return response()->json([
-      'success' => true,
-      'message' => 'Product added to cart',
-      'cartCount' => $cartCount,
-    ]);
   }
 
   public function remove(Request $request)
   {
-    $validated = $request->validate([
-      'product_id' => 'required|exists:products,id',
-      'size' => 'required|string',
-    ]);
+    try {
+      $validated = $request->validate([
+        'product_id' => 'required|exists:products,id',
+        'size' => 'nullable|string',
+        'color' => 'nullable|string',
+      ]);
 
-    $this->cartService->removeFromCart($validated['product_id'], $validated['size']);
-    $cartCount = $this->cartService->getCartCount();
+      // Normalize empty strings to null
+      $size = $validated['size'] === '' ? null : $validated['size'];
+      $color = $validated['color'] === '' ? null : $validated['color'];
 
-    return response()->json([
-      'success' => true,
-      'message' => 'Product removed from cart',
-      'cartCount' => $cartCount,
-    ]);
+      $this->cartService->removeFromCart(
+        $validated['product_id'],
+        $size,
+        $color
+      );
+      $cartCount = $this->cartService->getCartCount();
+
+      return response()->json([
+        'success' => true,
+        'message' => 'Product removed from cart',
+        'cartCount' => $cartCount,
+      ]);
+    } catch (\Exception $e) {
+      \Log::error('Cart remove error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+      return response()->json([
+        'success' => false,
+        'message' => 'Error removing from cart: ' . $e->getMessage(),
+      ], 500);
+    }
   }
 
   public function update(Request $request)
   {
-    $validated = $request->validate([
-      'product_id' => 'required|exists:products,id',
-      'size' => 'required|string',
-      'quantity' => 'required|integer|min:0|max:99',
-    ]);
+    try {
+      $validated = $request->validate([
+        'product_id' => 'required|exists:products,id',
+        'size' => 'nullable|string',
+        'color' => 'nullable|string',
+        'quantity' => 'required|integer|min:0|max:99',
+      ]);
 
-    $this->cartService->updateQuantity(
-      $validated['product_id'],
-      $validated['size'],
-      $validated['quantity']
-    );
+      // Normalize empty strings to null
+      $size = $validated['size'] === '' ? null : $validated['size'];
+      $color = $validated['color'] === '' ? null : $validated['color'];
 
-    $cartCount = $this->cartService->getCartCount();
+      $this->cartService->updateQuantity(
+        $validated['product_id'],
+        $size,
+        $color,
+        $validated['quantity']
+      );
 
-    return response()->json([
-      'success' => true,
-      'message' => 'Cart updated',
-      'cartCount' => $cartCount,
-    ]);
+      $cartCount = $this->cartService->getCartCount();
+
+      return response()->json([
+        'success' => true,
+        'message' => 'Cart updated',
+        'cartCount' => $cartCount,
+      ]);
+    } catch (\Exception $e) {
+      \Log::error('Cart update error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+      return response()->json([
+        'success' => false,
+        'message' => 'Error updating cart: ' . $e->getMessage(),
+      ], 500);
+    }
   }
 
   /**
