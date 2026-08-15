@@ -15,7 +15,7 @@
   {!! $seo->getMetaTags() ?? '' !!}
 
   <!-- Critical CSS (inline) and async defer for non-critical -->
-  @vite(['resources/css/app.css', 'resources/js/config.js', 'resources/js/scroll.js', 'resources/js/cart.js', 'resources/js/app.js'])
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
 
   {!! $seo->getStructuredData() ?? '' !!}
 
